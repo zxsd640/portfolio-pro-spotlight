@@ -14,7 +14,262 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      achievements: {
+        Row: {
+          date: string | null
+          description: string | null
+          id: string
+          sort_order: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          date?: string | null
+          description?: string | null
+          id?: string
+          sort_order?: number
+          title: string
+          user_id: string
+        }
+        Update: {
+          date?: string | null
+          description?: string | null
+          id?: string
+          sort_order?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      experience: {
+        Row: {
+          company: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          role: string
+          sort_order: number
+          start_date: string | null
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          role: string
+          sort_order?: number
+          start_date?: string | null
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          role?: string
+          sort_order?: number
+          start_date?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      portfolio_likes: {
+        Row: {
+          created_at: string
+          id: string
+          profile_id: string
+          visitor_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_id: string
+          visitor_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_id?: string
+          visitor_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_likes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_views: {
+        Row: {
+          id: string
+          profile_id: string
+          referrer: string | null
+          viewed_at: string
+          visitor_hash: string | null
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          referrer?: string | null
+          viewed_at?: string
+          visitor_hash?: string | null
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          referrer?: string | null
+          viewed_at?: string
+          visitor_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_views_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          accent: string
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          location: string | null
+          published: boolean
+          theme: string
+          title: string | null
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          accent?: string
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          location?: string | null
+          published?: boolean
+          theme?: string
+          title?: string | null
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          accent?: string
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          location?: string | null
+          published?: boolean
+          theme?: string
+          title?: string | null
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          link_url: string | null
+          sort_order: number
+          tags: string[]
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          sort_order?: number
+          tags?: string[]
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          sort_order?: number
+          tags?: string[]
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          category: string | null
+          id: string
+          level: number
+          name: string
+          sort_order: number
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          id?: string
+          level?: number
+          name: string
+          sort_order?: number
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          id?: string
+          level?: number
+          name?: string
+          sort_order?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          id: string
+          platform: string
+          sort_order: number
+          url: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          platform: string
+          sort_order?: number
+          url: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          platform?: string
+          sort_order?: number
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
