@@ -96,17 +96,16 @@ function BuilderPage() {
       await supabase.from("experience").delete().eq("user_id", user.id);
       await supabase.from("achievements").delete().eq("user_id", user.id);
       await supabase.from("social_links").delete().eq("user_id", user.id);
-      const inserts: Promise<any>[] = [];
-      if (form.projects.length) inserts.push(supabase.from("projects").insert(form.projects.map((p, i) => ({
+      const runs: Array<{ error: any } | undefined> = [];
+      if (form.projects.length) runs.push(await supabase.from("projects").insert(form.projects.map((p, i) => ({
         user_id: user.id, title: p.title, description: p.description, link_url: p.link_url || null,
         tags: p.tags.split(",").map((t) => t.trim()).filter(Boolean), sort_order: i,
       }))));
-      if (form.skills.length) inserts.push(supabase.from("skills").insert(form.skills.map((s, i) => ({ user_id: user.id, name: s.name, level: s.level, sort_order: i }))));
-      if (form.experience.length) inserts.push(supabase.from("experience").insert(form.experience.map((e, i) => ({ user_id: user.id, role: e.role, company: e.company, start_date: e.start_date, end_date: e.end_date, description: e.description, sort_order: i }))));
-      if (form.achievements.length) inserts.push(supabase.from("achievements").insert(form.achievements.map((a, i) => ({ user_id: user.id, title: a.title, description: a.description, date: a.date, sort_order: i }))));
-      if (form.socials.length) inserts.push(supabase.from("social_links").insert(form.socials.map((s, i) => ({ user_id: user.id, platform: s.platform, url: s.url, sort_order: i }))));
-      const results = await Promise.all(inserts);
-      for (const r of results) if (r.error) throw r.error;
+      if (form.skills.length) runs.push(await supabase.from("skills").insert(form.skills.map((s, i) => ({ user_id: user.id, name: s.name, level: s.level, sort_order: i }))));
+      if (form.experience.length) runs.push(await supabase.from("experience").insert(form.experience.map((e, i) => ({ user_id: user.id, role: e.role, company: e.company, start_date: e.start_date, end_date: e.end_date, description: e.description, sort_order: i }))));
+      if (form.achievements.length) runs.push(await supabase.from("achievements").insert(form.achievements.map((a, i) => ({ user_id: user.id, title: a.title, description: a.description, date: a.date, sort_order: i }))));
+      if (form.socials.length) runs.push(await supabase.from("social_links").insert(form.socials.map((s, i) => ({ user_id: user.id, platform: s.platform, url: s.url, sort_order: i }))));
+      for (const r of runs) if (r?.error) throw r.error;
 
       play("success");
       setSavedAt(Date.now());
