@@ -91,13 +91,11 @@ function BuilderPage() {
       if (pErr) throw pErr;
 
       // Replace strategy: delete then insert (simple & reliable)
-      await Promise.all([
-        supabase.from("projects").delete().eq("user_id", user.id),
-        supabase.from("skills").delete().eq("user_id", user.id),
-        supabase.from("experience").delete().eq("user_id", user.id),
-        supabase.from("achievements").delete().eq("user_id", user.id),
-        supabase.from("social_links").delete().eq("user_id", user.id),
-      ]);
+      await supabase.from("projects").delete().eq("user_id", user.id);
+      await supabase.from("skills").delete().eq("user_id", user.id);
+      await supabase.from("experience").delete().eq("user_id", user.id);
+      await supabase.from("achievements").delete().eq("user_id", user.id);
+      await supabase.from("social_links").delete().eq("user_id", user.id);
       const inserts: Promise<any>[] = [];
       if (form.projects.length) inserts.push(supabase.from("projects").insert(form.projects.map((p, i) => ({
         user_id: user.id, title: p.title, description: p.description, link_url: p.link_url || null,
