@@ -78,8 +78,8 @@ function PublicPortfolio() {
     supabase.auth.getUser().then(({ data }) => {
       const uid = data.user?.id;
       if (!uid) return;
-      supabase.from("portfolio_likes").select("id").eq("profile_id", profile.id).eq("visitor_hash", uid).maybeSingle().then(({ data: row }) => {
-        if (row) setLiked(true);
+      supabase.rpc("has_liked_portfolio", { _profile_id: profile.id }).then(({ data: didLike }) => {
+        if (didLike) setLiked(true);
       });
     });
   }, [profile.id, profile.published]);
