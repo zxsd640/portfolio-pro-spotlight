@@ -75,19 +75,28 @@ function PublicPortfolio() {
       referrer: typeof document !== "undefined" ? document.referrer.slice(0, 200) : null,
       visitor_hash: hash,
     }).then(() => {});
-    supabase.from("portfolio_likes").select("id").eq("profile_id", profile.id).eq("visitor_hash", hash).maybeSingle().then(({ data }) => {
-      if (data) setLiked(true);
+    supabase.auth.getUser().then(({ data }) => {
+      const uid = data.user?.id;
+      if (!uid) return;
+      supabase.from("portfolio_likes").select("id").eq("profile_id", profile.id).eq("visitor_hash", uid).maybeSingle().then(({ data: row }) => {
+        if (row) setLiked(true);
+      });
     });
   }, [profile.id, profile.published]);
 
   const toggleLike = async () => {
-    const hash = getVisitorHash();
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) {
+      window.location.href = "/auth";
+      return;
+    }
     if (liked) {
-      await supabase.from("portfolio_likes").delete().eq("profile_id", profile.id).eq("visitor_hash", hash);
+      await supabase.from("portfolio_likes").delete().eq("profile_id", profile.id).eq("visitor_hash", uid);
       setLiked(false);
       setLikeCount((c) => Math.max(0, c - 1));
     } else {
-      await supabase.from("portfolio_likes").insert({ profile_id: profile.id, visitor_hash: hash });
+      await supabase.from("portfolio_likes").insert({ profile_id: profile.id, visitor_hash: uid });
       setLiked(true);
       setLikeCount((c) => c + 1);
     }
