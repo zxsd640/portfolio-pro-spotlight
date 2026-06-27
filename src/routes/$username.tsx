@@ -54,10 +54,10 @@ function getVisitorHash() {
 }
 
 function PublicPortfolio() {
-  const data = Route.useLoaderData();
+  const data = Route.useLoaderData() as any;
   const { profile, projects, skills, experience, achievements, socials } = data;
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(data.likes);
+  const [liked, setLiked] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(data.likes as number);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
