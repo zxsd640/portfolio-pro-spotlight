@@ -13,15 +13,15 @@ export const Route = createFileRoute("/$username")({
       .eq("username", username)
       .maybeSingle();
     if (!profile) throw notFound();
-    const [{ data: projects }, { data: skills }, { data: experience }, { data: achievements }, { data: socials }, { count: likes }] = await Promise.all([
+    const [{ data: projects }, { data: skills }, { data: experience }, { data: achievements }, { data: socials }, { data: likes }] = await Promise.all([
       supabase.from("projects").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("skills").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("experience").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("achievements").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("social_links").select("*").eq("user_id", profile.id).order("sort_order"),
-      supabase.from("portfolio_likes").select("id", { count: "exact", head: true }).eq("profile_id", profile.id),
+      supabase.rpc("get_portfolio_likes_count", { _profile_id: profile.id }),
     ]);
-    return { profile, projects: projects ?? [], skills: skills ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], likes: likes ?? 0 };
+    return { profile, projects: projects ?? [], skills: skills ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], likes: (likes as number) ?? 0 };
   },
   head: ({ loaderData }) => ({
     meta: [
