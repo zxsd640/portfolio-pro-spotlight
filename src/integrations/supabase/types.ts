@@ -272,7 +272,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_portfolio_likes_count: {
+        Args: { _profile_id: string }
+        Returns: number
+      }
+      has_liked_portfolio: { Args: { _profile_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
