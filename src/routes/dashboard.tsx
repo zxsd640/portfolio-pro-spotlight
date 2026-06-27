@@ -1,6 +1,9 @@
-import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FolderKanban, BarChart3, Settings, LogOut, Plus, Volume2, VolumeX } from "lucide-react";
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { LayoutDashboard, FolderKanban, BarChart3, Settings, LogOut, Volume2, VolumeX, Wand2, ExternalLink } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useSound } from "@/lib/sound";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -14,6 +17,7 @@ export const Route = createFileRoute("/dashboard")({
 
 const items = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
+  { to: "/dashboard/builder", label: "Builder", icon: Wand2, exact: false },
   { to: "/dashboard/projects", label: "Projects", icon: FolderKanban, exact: false },
   { to: "/dashboard/analytics", label: "Analytics", icon: BarChart3, exact: false },
   { to: "/dashboard/settings", label: "Settings", icon: Settings, exact: false },
@@ -22,6 +26,28 @@ const items = [
 function DashboardLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { enabled, toggle } = useSound();
+  const { user, loading, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading && !user) navigate({ to: "/auth", search: { mode: "login" } });
+  }, [loading, user, navigate]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("username").eq("id", user.id).maybeSingle().then(({ data }) => {
+      setUsername(data?.username ?? null);
+    });
+  }, [user]);
+
+  if (loading || !user) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-background">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/10 border-t-[color:var(--violet)]" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-background">
@@ -64,9 +90,9 @@ function DashboardLayout() {
             {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
             Sound {enabled ? "on" : "off"}
           </button>
-          <Link to="/" data-sound className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <button onClick={() => { signOut(); navigate({ to: "/" }); }} data-sound className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground cursor-pointer">
             <LogOut className="h-4 w-4" /> Sign out
-          </Link>
+          </button>
           <p className="mt-3 px-3 text-[10px] text-muted-foreground/70">
             Built by <span className="text-gradient font-medium">Zyad Abdou</span>
           </p>
@@ -79,13 +105,25 @@ function DashboardLayout() {
             <Link to="/" data-sound className="text-sm font-semibold">Portfolio Pro</Link>
           </div>
           <div className="flex flex-1 items-center justify-end gap-3">
+            {username && (
+              <a
+                href={`/${username}`}
+                target="_blank"
+                rel="noreferrer"
+                data-sound
+                data-sound-hover
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs hover:bg-white/10"
+              >
+                View portfolio <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
             <Link
-              to="/dashboard/projects"
+              to="/dashboard/builder"
               data-sound
               data-sound-hover
               className="inline-flex items-center gap-1.5 rounded-xl brand-gradient px-3.5 py-2 text-xs font-medium text-white hover:scale-[1.03] transition-transform"
             >
-              <Plus className="h-3.5 w-3.5" /> New project
+              <Wand2 className="h-3.5 w-3.5" /> Open builder
             </Link>
           </div>
         </header>

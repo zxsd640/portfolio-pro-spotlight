@@ -1,9 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
-import { ArrowRight, Mail, Lock, User, Github, Sparkles } from "lucide-react";
+import { ArrowRight, Mail, Lock, User as UserIcon, Sparkles, CheckCircle2, AlertCircle } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 import { useSound } from "@/lib/sound";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 const search = z.object({ mode: z.enum(["login", "register"]).catch("login") });
 
@@ -23,14 +26,94 @@ function AuthPage() {
   const isRegister = mode === "register";
   const navigate = useNavigate();
   const { play } = useSound();
-  const [loading, setLoading] = useState(false);
+  const { user, loading: authLoading } = useAuth();
 
-  const onSubmit = (e: React.FormEvent) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [verifySent, setVerifySent] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && user) navigate({ to: "/dashboard" });
+  }, [authLoading, user, navigate]);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
-    play("success");
-    setTimeout(() => navigate({ to: "/dashboard" }), 700);
+    try {
+      if (isRegister) {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: { full_name: name },
+          },
+        });
+        if (error) throw error;
+        if (data.session) {
+          play("success");
+          navigate({ to: "/dashboard" });
+        } else {
+          play("notify");
+          setVerifySent(true);
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        play("success");
+        navigate({ to: "/dashboard" });
+      }
+    } catch (err: any) {
+      setError(err?.message || "Something went wrong");
+      play("notify");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const onGoogle = async () => {
+    setError(null);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/dashboard",
+      });
+      if (result.error) {
+        setError(result.error.message || "Google sign-in failed");
+        return;
+      }
+      if (result.redirected) return;
+      navigate({ to: "/dashboard" });
+    } catch (err: any) {
+      setError(err?.message || "Google sign-in failed");
+    }
+  };
+
+  if (verifySent) {
+    return (
+      <div className="relative min-h-screen overflow-hidden bg-background">
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hero-glow" />
+        <SiteNav />
+        <main className="relative mx-auto flex min-h-screen max-w-md flex-col justify-center px-4 pt-32 pb-16">
+          <div className="glass-panel rounded-3xl p-8 text-center animate-fade-up">
+            <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl brand-gradient">
+              <CheckCircle2 className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="mt-4 text-2xl font-semibold tracking-tight">Check your inbox</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We sent a verification link to <span className="text-foreground">{email}</span>. Click it to activate your account.
+            </p>
+            <Link to="/auth" search={{ mode: "login" }} className="mt-6 inline-flex items-center gap-1 text-sm text-[color:var(--violet)] hover:underline">
+              Back to sign in
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
@@ -49,14 +132,13 @@ function AuthPage() {
             {isRegister ? "Free forever — no credit card." : "Continue to your dashboard."}
           </p>
 
-          <div className="mt-6 flex gap-2">
-            <button data-sound className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm hover:bg-white/10 cursor-pointer">
-              <Github className="h-4 w-4" /> GitHub
-            </button>
-            <button data-sound className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm hover:bg-white/10 cursor-pointer">
-              Google
-            </button>
-          </div>
+          <button
+            onClick={onGoogle}
+            data-sound
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm hover:bg-white/10 cursor-pointer"
+          >
+            <GoogleIcon /> Continue with Google
+          </button>
 
           <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
             <span className="h-px flex-1 bg-white/10" /> or <span className="h-px flex-1 bg-white/10" />
@@ -64,10 +146,17 @@ function AuthPage() {
 
           <form onSubmit={onSubmit} className="space-y-3">
             {isRegister && (
-              <Field icon={User} placeholder="Full name" required />
+              <Field icon={UserIcon} placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
             )}
-            <Field icon={Mail} type="email" placeholder="Email" required />
-            <Field icon={Lock} type="password" placeholder="Password" required />
+            <Field icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Field icon={Lock} type="password" placeholder="Password (min 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} required />
+
+            {error && (
+              <div className="flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs text-red-300">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" /> {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -87,6 +176,9 @@ function AuthPage() {
             </Link>
           </p>
         </div>
+        <p className="mt-6 text-center text-[11px] text-muted-foreground/70">
+          Designed & developed by <span className="text-gradient font-medium">Zyad Abdou</span>
+        </p>
       </main>
     </div>
   );
@@ -101,5 +193,16 @@ function Field({ icon: Icon, ...props }: { icon: any } & React.InputHTMLAttribut
         className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-2.5 text-sm outline-none focus:border-[color:var(--royal)] transition-colors"
       />
     </div>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 48 48" aria-hidden>
+      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35.5 24 35.5c-6.4 0-11.5-5.1-11.5-11.5S17.6 12.5 24 12.5c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.9 6.5 29.2 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.3-.4-3.5z"/>
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12.5 24 12.5c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.9 6.5 29.2 4.5 24 4.5 16.3 4.5 9.7 8.9 6.3 14.7z"/>
+      <path fill="#4CAF50" d="M24 43.5c5.1 0 9.8-2 13.3-5.2l-6.1-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.3 0-9.7-3.1-11.3-7.5l-6.5 5C9.6 39 16.2 43.5 24 43.5z"/>
+      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.1 5.2c-.4.4 6.6-4.8 6.6-14.7 0-1.2-.1-2.3-.3-3.5z"/>
+    </svg>
   );
 }
