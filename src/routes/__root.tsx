@@ -92,6 +92,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Portfolio Pro — Build a Portfolio That Gets You Hired" },
+      { name: "description", content: "Portfolio Pro is a premium SaaS web application for creators to build stunning professional portfolios." },
+      { property: "og:description", content: "Portfolio Pro is a premium SaaS web application for creators to build stunning professional portfolios." },
+      { name: "twitter:description", content: "Portfolio Pro is a premium SaaS web application for creators to build stunning professional portfolios." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/37d45cf5-cae5-405f-bd02-49d3e9faeb9b/id-preview-b49cc779--c96f9f83-f389-408b-a1ce-a40b31cb153a.lovable.app-1782521219660.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/37d45cf5-cae5-405f-bd02-49d3e9faeb9b/id-preview-b49cc779--c96f9f83-f389-408b-a1ce-a40b31cb153a.lovable.app-1782521219660.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
