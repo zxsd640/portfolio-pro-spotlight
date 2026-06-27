@@ -131,13 +131,22 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+import { SoundProvider } from "../lib/sound";
+import { ContactProvider } from "../lib/contact-modal";
+import { MouseGlow } from "../components/MouseGlow";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SoundProvider>
+        <ContactProvider>
+          <MouseGlow />
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </ContactProvider>
+      </SoundProvider>
     </QueryClientProvider>
   );
 }
