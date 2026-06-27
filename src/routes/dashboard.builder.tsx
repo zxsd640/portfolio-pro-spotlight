@@ -122,12 +122,14 @@ function BuilderPage() {
     setError(null);
     try {
       const result = await polishPortfolio({
-        display_name: form.display_name,
-        title: form.title,
-        bio: form.bio,
-        projects: form.projects.map((p) => ({ title: p.title, description: p.description })),
-        experience: form.experience.map((e) => ({ role: e.role, company: e.company, description: e.description })),
-        achievements: form.achievements.map((a) => ({ title: a.title, description: a.description })),
+        data: {
+          display_name: form.display_name,
+          title: form.title,
+          bio: form.bio,
+          projects: form.projects.map((p) => ({ title: p.title, description: p.description })),
+          experience: form.experience.map((e) => ({ role: e.role, company: e.company, description: e.description })),
+          achievements: form.achievements.map((a) => ({ title: a.title, description: a.description })),
+        },
       });
       setForm((f) => ({
         ...f,
