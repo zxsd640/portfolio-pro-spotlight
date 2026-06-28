@@ -135,6 +135,7 @@ import { SoundProvider } from "../lib/sound";
 import { ContactProvider } from "../lib/contact-modal";
 import { MouseGlow } from "../components/MouseGlow";
 import { AuthProvider } from "../lib/auth";
+import "../lib/i18n";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
