@@ -65,7 +65,7 @@ function DashboardLayout() {
         </Link>
 
         <nav className="flex-1 space-y-1 px-3">
-          {items.map((it) => {
+          {ITEMS.map((it) => {
             const active = it.exact ? pathname === it.to : pathname.startsWith(it.to);
             return (
               <Link
@@ -81,23 +81,26 @@ function DashboardLayout() {
                 <span className={["grid h-7 w-7 place-items-center rounded-lg transition-all", active ? "brand-gradient text-white shadow-[0_8px_20px_-8px_oklch(0.55_0.25_295/0.8)]" : "bg-white/5"].join(" ")}>
                   <it.icon className="h-4 w-4" />
                 </span>
-                {it.label}
-                {active && <span className="ml-auto h-1.5 w-1.5 rounded-full brand-gradient" />}
+                {t(it.labelKey)}
+                {active && <span className="ms-auto h-1.5 w-1.5 rounded-full brand-gradient" />}
               </Link>
             );
           })}
         </nav>
 
         <div className="border-t border-white/5 p-3">
+          <div className="mb-2 flex items-center justify-between rounded-xl px-1">
+            <LanguageSwitcher />
+          </div>
           <button onClick={toggle} data-sound className="mb-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground cursor-pointer">
             {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-            Sound {enabled ? "on" : "off"}
+            {enabled ? t("nav.soundOn") : t("nav.soundOff")}
           </button>
           <button onClick={() => { signOut(); navigate({ to: "/" }); }} data-sound className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground cursor-pointer">
-            <LogOut className="h-4 w-4" /> Sign out
+            <LogOut className="h-4 w-4" /> {t("dashboard.signOut")}
           </button>
           <p className="mt-3 px-3 text-[10px] text-muted-foreground/70">
-            Built by <span className="text-gradient font-medium">Zyad Abdou</span>
+            {t("footer.designedBy")} <span className="text-gradient font-medium">Zyad Abdou</span>
           </p>
         </div>
       </aside>
@@ -117,7 +120,7 @@ function DashboardLayout() {
                 data-sound-hover
                 className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs hover:bg-white/10"
               >
-                View portfolio <ExternalLink className="h-3 w-3" />
+                {t("dashboard.viewPortfolio")} <ExternalLink className="h-3 w-3" />
               </a>
             )}
             <Link
@@ -126,17 +129,17 @@ function DashboardLayout() {
               data-sound-hover
               className="inline-flex items-center gap-1.5 rounded-xl brand-gradient px-3.5 py-2 text-xs font-medium text-white hover:scale-[1.03] transition-transform"
             >
-              <Wand2 className="h-3.5 w-3.5" /> Open builder
+              <Wand2 className="h-3.5 w-3.5" /> {t("dashboard.openBuilder")}
             </Link>
           </div>
         </header>
 
         <nav className="flex gap-1 overflow-x-auto border-b border-white/5 bg-background/50 px-4 py-2 md:hidden">
-          {items.map((it) => {
+          {ITEMS.map((it) => {
             const active = it.exact ? pathname === it.to : pathname.startsWith(it.to);
             return (
               <Link key={it.to} to={it.to} data-sound="nav" className={["whitespace-nowrap rounded-lg px-3 py-1.5 text-xs", active ? "bg-white/10" : "text-muted-foreground"].join(" ")}>
-                {it.label}
+                {t(it.labelKey)}
               </Link>
             );
           })}
