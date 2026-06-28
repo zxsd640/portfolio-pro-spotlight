@@ -1,76 +1,42 @@
+## Scope reality check
 
-# Smart Portfolio Builder — Implementation Plan
+You picked all four priority groups plus the security uplift. That's roughly 4-6 turns of focused work to do well. Doing it all in one turn would mean shallow, half-broken features across the board. I'll deliver one group per turn, fully working, then move to the next.
 
-This upgrades the current Portfolio Pro design from a static marketing site into a real product where users sign up, build a portfolio with AI help, publish it at `/<username>`, and track views.
+## Phased plan
 
-I'll build it in 4 phases so each phase is testable on its own. I'll only ask one question up front (below), then execute the rest.
+### Turn 1 (this turn) — i18n + RTL + language switcher
+- Install `i18next`, `react-i18next`, `i18next-browser-languagedetector`.
+- Translation JSON files for: English, Arabic, Spanish, French, German, Portuguese. Arabic strings written manually in Modern Standard Arabic (no machine translation).
+- Coverage: nav, footer, home, auth, dashboard shell, dashboard pages (overview/projects/analytics/settings), builder, demo, about, contact, templates.
+- Language switcher in `SiteNav` and dashboard sidebar: flag emoji + language name dropdown.
+- Persist choice in `localStorage`; apply `<html dir="rtl" lang="ar">` when Arabic; add `:dir(rtl)` CSS adjustments for the existing layout (margins, icons, chevrons, glow position).
 
----
+### Turn 2 — AI Builder overhaul
+- Modal entry: "AI from scratch" vs "Upload CV + photo".
+- AI-from-scratch: short questionnaire → generates 3 variations.
+- CV upload: PDF/DOCX parsing (server function with `pdf-parse`/`mammoth`) → AI fills the builder.
+- True bio variation engine (random style/tone seeds; never repeats).
+- 8 in-app example portfolios across different professions (logo placeholders only — no faces).
 
-## Phase 1 — Backend foundation (Lovable Cloud)
+### Turn 3 — Ratings & reviews + Trending
+- New tables: `portfolio_ratings` (stars + comment + helpful counts), `portfolio_rating_replies`, profanity filter.
+- Public rating widget on `/$username`; reviews list with helpful votes; owner reply.
+- "Top rated" badge ≥ 4.5; dashboard reviews tab.
+- Homepage "Trending portfolios" rail (top rated this week).
 
-Enable Lovable Cloud, then create:
-
-**Database tables (all with RLS + grants):**
-- `profiles` — `id (uuid → auth.users)`, `username (unique)`, `display_name`, `title`, `bio`, `avatar_url`, `theme ('dark'|'light')`, `published bool`, `created_at`
-- `projects` — `id`, `user_id`, `title`, `description`, `image_url`, `link_url`, `tags text[]`, `order int`
-- `skills` — `id`, `user_id`, `name`, `level int`, `category`
-- `experience` — `id`, `user_id`, `role`, `company`, `start_date`, `end_date`, `description`
-- `achievements` — `id`, `user_id`, `title`, `description`, `date`
-- `social_links` — `id`, `user_id`, `platform`, `url`
-- `portfolio_views` — `id`, `profile_id`, `viewed_at`, `referrer`, `country` (for analytics)
-- `portfolio_likes` — `id`, `profile_id`, `visitor_hash` (anon likes)
-
-**RLS:** owners full access on their own rows; `anon` SELECT only when `profiles.published = true` (and for child tables joined to a published profile). `portfolio_views` insert open to `anon` so visits count.
-
-**Storage bucket:** `portfolio-assets` (public) for avatars + project images.
-
-**Auth:** email/password with email verification + Google + GitHub OAuth (Google/GitHub configured via `configure_social_auth`).
-
-**Trigger:** on `auth.users` insert → create `profiles` row with auto-generated username from email.
-
----
-
-## Phase 2 — Auth + Dashboard wiring
-
-- Replace the mock `/auth` page with a real Supabase email/password + Google + GitHub flow, email verification screen, and `/reset-password` route.
-- Add `_authenticated/` layout (integration-managed) so `/dashboard/*` requires login.
-- Rewrite dashboard stats (Projects/Views/Likes) to read live counts from Cloud — all 0 for new users.
-- Add a Sign Out that properly tears down session + cache.
-
----
-
-## Phase 3 — Portfolio builder + AI
-
-- New route `/dashboard/builder` — guided multi-step form (Profile → Skills → Projects → Experience → Achievements → Socials).
-- Each step saves to Cloud immediately (autosave).
-- **AI Polish** button on each text field + a global "Auto-organize my portfolio" action — calls a `createServerFn` that hits Lovable AI Gateway (`google/gemini-3-flash-preview`) to rewrite bio/project descriptions into clean professional copy.
-- Live preview pane on the right that renders the public portfolio in real time.
-- Theme toggle (dark/light) stored on `profiles.theme`.
-
----
-
-## Phase 4 — Public portfolios + sharing + analytics + PDF
-
-- New public route `/$username` (SSR-friendly, head() with OG tags from profile) that renders the user's portfolio — premium dark/light layout, animated sections, projects grid, skills bars, timeline, contact.
-- Records a `portfolio_views` row on each visit (server fn).
-- Share button: copy link + native share sheet + auto-generated OG image URL.
-- Like button for anonymous visitors (one per `visitor_hash`).
-- **Download PDF**: client-side via `html2canvas` + `jspdf` against the rendered portfolio.
-- `/dashboard/analytics` shows real view/like counts + 30-day chart from `portfolio_views`.
-
----
+### Turn 4 — Polish pass + Country onboarding + Security uplift
+- Country selector modal post-signup (search + flag emoji, home/current toggle), saved to profile.
+- Skills 0-100 with progress bar, color coding, "Expert" badge.
+- Logo-only placeholders across templates (SVG monograms/geometrics).
+- `security_logs` table (login/logout/failed attempt events), active sessions list + revoke in Settings, hCaptcha after 3 failed logins.
+- Confetti on first publish, share button (copy/WhatsApp/LinkedIn/Twitter), completion bar in dashboard, count-up skill bars, Cmd+S / Cmd+P shortcuts in builder, notification bell.
+- Bug sweep: broken routes, validation, mobile layout, hydration warnings, templates page previews.
 
 ## Technical notes
-- Stack stays TanStack Start + Tailwind v4 + shadcn — no framework changes.
-- AI calls go through Lovable AI Gateway in a `createServerFn` (server-only key).
-- All existing premium UI (sound system, MouseGlow, glass panels, brand gradient, Zyad Abdou credit) is preserved.
-- New deps: `html2canvas`, `jspdf` (PDF), `date-fns` (already likely present).
 
----
+- GitHub OAuth dropped (not supported by Lovable Cloud managed auth).
+- "Full custom JWT 15-min rotation + httpOnly refresh cookies" cannot ship on Supabase managed auth without replacing the auth layer entirely — your "Standard + CAPTCHA + logs + sessions" pick is what I'll deliver in Turn 4.
+- Existing premium design language, sound system, mouse glow, and current Supabase schema are preserved.
+- Each turn ends with a clean typecheck and a quick smoke check of the affected pages.
 
-## One question before I start
-
-**Email verification** — do you want me to keep it ON (users must click a link in their inbox before they can sign in)? It's more secure but adds friction. The alternative is to turn it OFF so signup → straight into the dashboard.
-
-If you say "yes, keep verification on" or just "go", I'll proceed with verification ON. If you say "off", I'll disable it. Then I'll execute Phases 1–4 end-to-end.
+Reply "go" to start Turn 1 (i18n + RTL), or tell me which turn to tackle first if you want a different order.

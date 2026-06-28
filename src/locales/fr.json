@@ -1,0 +1,76 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "next": "Suivant",
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "search": "Rechercher",
+    "close": "Fermer",
+    "language": "Langue"
+  },
+  "nav": {
+    "templates": "Modèles",
+    "demo": "Démo",
+    "about": "À propos",
+    "contact": "Contact",
+    "signIn": "Connexion",
+    "startFree": "Commencer gratuitement",
+    "soundOn": "Son activé",
+    "soundOff": "Son désactivé",
+    "menu": "Menu"
+  },
+  "hero": {
+    "badge": "Nouveau — Créateur de portfolio par IA",
+    "titleA": "Créez un portfolio qui",
+    "titleB": "vous fait embaucher.",
+    "subtitle": "Construisez un site personnel élégant en quelques minutes et présentez votre travail comme un pro. Totalement gratuit pour les designers, développeurs, photographes et créateurs exigeants.",
+    "startFree": "Commencer gratuitement",
+    "viewDemo": "Voir la démo",
+    "smallPrint": "Gratuit pour toujours · Sans carte · Sans abonnement"
+  },
+  "footer": {
+    "tagline": "Construisez votre présence pro. Impressionnez chaque client. Totalement gratuit.",
+    "product": "Produit",
+    "company": "Société",
+    "dashboard": "Tableau de bord",
+    "rights": "Tous droits réservés.",
+    "designedBy": "Conçu et développé par"
+  },
+  "auth": {
+    "welcomeBack": "Bon retour",
+    "createAccount": "Créez votre compte gratuit",
+    "signIn": "Connectez-vous.",
+    "startBuilding": "Commencez à créer.",
+    "continueDash": "Accédez à votre tableau de bord.",
+    "freeForever": "Gratuit à vie — sans carte.",
+    "continueGoogle": "Continuer avec Google",
+    "or": "ou",
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "password": "Mot de passe (6 caractères min.)",
+    "pleaseWait": "Veuillez patienter…",
+    "submitCreate": "Créer un compte",
+    "submitSignIn": "Se connecter",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "newHere": "Nouveau sur Portfolio Pro ?",
+    "createOne": "Créez-en un",
+    "checkInbox": "Vérifiez votre boîte mail",
+    "verifySent": "Nous avons envoyé un lien de vérification à {{email}}. Cliquez dessus pour activer votre compte.",
+    "backToSignIn": "Retour à la connexion"
+  },
+  "dashboard": {
+    "overview": "Vue d'ensemble",
+    "builder": "Créateur",
+    "projects": "Projets",
+    "analytics": "Statistiques",
+    "settings": "Paramètres",
+    "signOut": "Se déconnecter",
+    "viewPortfolio": "Voir le portfolio",
+    "openBuilder": "Ouvrir le créateur"
+  }
+}

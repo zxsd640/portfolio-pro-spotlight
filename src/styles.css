@@ -235,3 +235,7 @@
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
 }
+
+/* RTL adjustments */
+[dir="rtl"] body { font-family: "Tajawal", "Cairo", "Inter", system-ui, sans-serif; }
+[dir="rtl"] .text-gradient { background-image: linear-gradient(270deg, oklch(0.78 0.18 295), oklch(0.85 0.14 220)); }

@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { ArrowRight, Mail, Lock, User as UserIcon, Sparkles, CheckCircle2, AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SiteNav } from "@/components/SiteNav";
 import { useSound } from "@/lib/sound";
 import { useAuth } from "@/lib/auth";
@@ -26,6 +27,7 @@ function AuthPage() {
   const isRegister = mode === "register";
   const navigate = useNavigate();
   const { play } = useSound();
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
 
   const [name, setName] = useState("");
@@ -102,12 +104,12 @@ function AuthPage() {
             <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl brand-gradient">
               <CheckCircle2 className="h-6 w-6 text-white" />
             </div>
-            <h1 className="mt-4 text-2xl font-semibold tracking-tight">Check your inbox</h1>
+            <h1 className="mt-4 text-2xl font-semibold tracking-tight">{t("auth.checkInbox")}</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              We sent a verification link to <span className="text-foreground">{email}</span>. Click it to activate your account.
+              {t("auth.verifySent", { email })}
             </p>
             <Link to="/auth" search={{ mode: "login" }} className="mt-6 inline-flex items-center gap-1 text-sm text-[color:var(--violet)] hover:underline">
-              Back to sign in
+              {t("auth.backToSignIn")}
             </Link>
           </div>
         </main>
@@ -123,13 +125,13 @@ function AuthPage() {
         <div className="glass-panel rounded-3xl p-8 animate-fade-up">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-xs text-muted-foreground">
             <Sparkles className="h-3 w-3 text-[color:var(--violet)]" />
-            {isRegister ? "Create your free account" : "Welcome back"}
+            {isRegister ? t("auth.createAccount") : t("auth.welcomeBack")}
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            {isRegister ? "Start building." : "Sign in."}
+            {isRegister ? t("auth.startBuilding") : t("auth.signIn")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {isRegister ? "Free forever — no credit card." : "Continue to your dashboard."}
+            {isRegister ? t("auth.freeForever") : t("auth.continueDash")}
           </p>
 
           <button
@@ -137,19 +139,19 @@ function AuthPage() {
             data-sound
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm hover:bg-white/10 cursor-pointer"
           >
-            <GoogleIcon /> Continue with Google
+            <GoogleIcon /> {t("auth.continueGoogle")}
           </button>
 
           <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-            <span className="h-px flex-1 bg-white/10" /> or <span className="h-px flex-1 bg-white/10" />
+            <span className="h-px flex-1 bg-white/10" /> {t("auth.or")} <span className="h-px flex-1 bg-white/10" />
           </div>
 
           <form onSubmit={onSubmit} className="space-y-3">
             {isRegister && (
-              <Field icon={UserIcon} placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
+              <Field icon={UserIcon} placeholder={t("auth.fullName")} value={name} onChange={(e) => setName(e.target.value)} required />
             )}
-            <Field icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <Field icon={Lock} type="password" placeholder="Password (min 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} required />
+            <Field icon={Mail} type="email" placeholder={t("auth.email")} value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Field icon={Lock} type="password" placeholder={t("auth.password")} value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} required />
 
             {error && (
               <div className="flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs text-red-300">
@@ -164,20 +166,20 @@ function AuthPage() {
               data-sound-hover
               className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl brand-gradient px-4 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.01] cursor-pointer disabled:opacity-70"
             >
-              {loading ? "Please wait…" : isRegister ? "Create account" : "Sign in"}
-              <ArrowRight className="h-4 w-4" />
+              {loading ? t("auth.pleaseWait") : isRegister ? t("auth.submitCreate") : t("auth.submitSignIn")}
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </button>
           </form>
 
           <p className="mt-5 text-center text-sm text-muted-foreground">
-            {isRegister ? "Already have an account?" : "New to Portfolio Pro?"}{" "}
+            {isRegister ? t("auth.haveAccount") : t("auth.newHere")}{" "}
             <Link to="/auth" search={{ mode: isRegister ? "login" : "register" }} data-sound className="text-foreground hover:underline">
-              {isRegister ? "Sign in" : "Create one"}
+              {isRegister ? t("auth.submitSignIn") : t("auth.createOne")}
             </Link>
           </p>
         </div>
         <p className="mt-6 text-center text-[11px] text-muted-foreground/70">
-          Designed & developed by <span className="text-gradient font-medium">Zyad Abdou</span>
+          {t("footer.designedBy")} <span className="text-gradient font-medium">Zyad Abdou</span>
         </p>
       </main>
     </div>

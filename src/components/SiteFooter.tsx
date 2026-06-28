@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Twitter, Github, Linkedin, Instagram } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 function LogoMark() {
   return (
@@ -11,15 +11,16 @@ function LogoMark() {
 }
 
 export function SiteFooter() {
+  const { t } = useTranslation();
   const cols = [
-    { title: "Product", links: [
-      { l: "Templates", to: "/templates" },
-      { l: "Demo", to: "/demo" },
-      { l: "Dashboard", to: "/dashboard" },
+    { title: t("footer.product"), links: [
+      { l: t("nav.templates"), to: "/templates" as const },
+      { l: t("nav.demo"), to: "/demo" as const },
+      { l: t("footer.dashboard"), to: "/dashboard" as const },
     ]},
-    { title: "Company", links: [
-      { l: "About", to: "/about" },
-      { l: "Contact", to: "/contact" },
+    { title: t("footer.company"), links: [
+      { l: t("nav.about"), to: "/about" as const },
+      { l: t("nav.contact"), to: "/contact" as const },
     ]},
   ];
   return (
@@ -31,15 +32,8 @@ export function SiteFooter() {
             <span className="text-sm font-semibold">Portfolio Pro</span>
           </div>
           <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-            Build your professional presence. Impress every client. Completely free.
+            {t("footer.tagline")}
           </p>
-          <div className="mt-5 flex gap-3 text-muted-foreground/60" aria-hidden>
-            {[Twitter, Github, Linkedin, Instagram].map((Icon, i) => (
-              <span key={i} className="grid h-9 w-9 place-items-center rounded-lg glass-panel opacity-60">
-                <Icon className="h-4 w-4" />
-              </span>
-            ))}
-          </div>
         </div>
         {cols.map((c) => (
           <div key={c.title}>
@@ -57,9 +51,9 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="mx-auto mt-14 flex max-w-6xl flex-col items-start justify-between gap-3 border-t border-white/5 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-        <p>© {new Date().getFullYear()} Portfolio Pro. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Portfolio Pro. {t("footer.rights")}</p>
         <p className="text-foreground/80">
-          Designed &amp; Developed by <span className="font-semibold text-gradient">Zyad Abdou</span>
+          {t("footer.designedBy")} <span className="font-semibold text-gradient">Zyad Abdou</span>
         </p>
       </div>
     </footer>

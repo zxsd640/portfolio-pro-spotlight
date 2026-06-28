@@ -1,7 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ArrowRight, Volume2, VolumeX, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSound } from "@/lib/sound";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 function LogoMark() {
   return (
@@ -12,18 +14,19 @@ function LogoMark() {
   );
 }
 
-const links = [
-  { label: "Templates", to: "/templates" },
-  { label: "Demo", to: "/demo" },
-  { label: "About", to: "/about" },
-  { label: "Contact", to: "/contact" },
-];
-
 export function SiteNav() {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { enabled, toggle } = useSound();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const links = [
+    { label: t("nav.templates"), to: "/templates" },
+    { label: t("nav.demo"), to: "/demo" },
+    { label: t("nav.about"), to: "/about" },
+    { label: t("nav.contact"), to: "/contact" },
+  ] as const;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -65,12 +68,13 @@ export function SiteNav() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <LanguageSwitcher />
           <button
             onClick={toggle}
             data-sound
-            title={enabled ? "Sound on" : "Sound off"}
-            aria-label="Toggle sound"
+            title={enabled ? t("nav.soundOn") : t("nav.soundOff")}
+            aria-label={enabled ? t("nav.soundOn") : t("nav.soundOff")}
             className="grid h-9 w-9 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground cursor-pointer"
           >
             {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
@@ -81,7 +85,7 @@ export function SiteNav() {
             data-sound
             className="hidden rounded-xl px-3.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline-block"
           >
-            Sign in
+            {t("nav.signIn")}
           </Link>
           <Link
             to="/auth"
@@ -90,14 +94,14 @@ export function SiteNav() {
             data-sound-hover
             className="inline-flex items-center gap-1.5 rounded-xl brand-gradient px-3.5 py-2 text-sm font-medium text-white shadow-[0_8px_30px_-10px_oklch(0.55_0.25_295/0.7)] transition-all hover:scale-[1.03]"
           >
-            Start free
-            <ArrowRight className="h-3.5 w-3.5" />
+            {t("nav.startFree")}
+            <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
           </Link>
           <button
             onClick={() => setOpen((v) => !v)}
             data-sound
             className="grid h-9 w-9 place-items-center rounded-xl md:hidden cursor-pointer"
-            aria-label="Menu"
+            aria-label={t("nav.menu")}
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
