@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ArrowRight,
   Sparkles,
@@ -81,6 +82,7 @@ function BackdropGlow() {
 /* ---------------- Hero ---------------- */
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const { t: tHero } = useTranslation();
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
