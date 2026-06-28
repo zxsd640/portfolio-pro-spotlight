@@ -103,22 +103,21 @@ function Hero() {
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <div className="animate-fade-up mx-auto mb-6 inline-flex items-center gap-2 rounded-full glass-panel px-3 py-1.5 text-xs text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-[color:var(--violet)]" />
-          New — AI-powered portfolio builder
+          {tHero("hero.badge")}
         </div>
 
         <h1
           className="animate-fade-up text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
           style={{ animationDelay: "80ms" }}
         >
-          Create a portfolio that <span className="text-gradient">gets you hired.</span>
+          {tHero("hero.titleA")} <span className="text-gradient">{tHero("hero.titleB")}</span>
         </h1>
 
         <p
           className="animate-fade-up mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
           style={{ animationDelay: "160ms" }}
         >
-          Build a beautiful personal website in minutes and showcase your work like a professional.
-          Completely free for designers, developers, photographers and creators who care about craft.
+          {tHero("hero.subtitle")}
         </p>
 
         <div
@@ -132,15 +131,15 @@ function Hero() {
             data-sound-hover
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.6)] transition-transform hover:scale-[1.03]"
           >
-            Start free
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            {tHero("hero.startFree")}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
           </Link>
           <Link
             to="/demo"
             data-sound
             className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
           >
-            View demo
+            {tHero("hero.viewDemo")}
           </Link>
         </div>
 
@@ -148,7 +147,7 @@ function Hero() {
           className="animate-fade-up mt-6 text-xs text-muted-foreground"
           style={{ animationDelay: "320ms" }}
         >
-          Free forever · No credit card required · No subscriptions
+          {tHero("hero.smallPrint")}
         </p>
       </div>
     </section>
