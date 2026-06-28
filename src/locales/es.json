@@ -1,0 +1,76 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "loading": "Cargando…",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "close": "Cerrar",
+    "language": "Idioma"
+  },
+  "nav": {
+    "templates": "Plantillas",
+    "demo": "Demo",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "signIn": "Iniciar sesión",
+    "startFree": "Empezar gratis",
+    "soundOn": "Sonido activado",
+    "soundOff": "Sonido desactivado",
+    "menu": "Menú"
+  },
+  "hero": {
+    "badge": "Nuevo — Constructor de portafolios con IA",
+    "titleA": "Crea un portafolio que",
+    "titleB": "te consiga el trabajo.",
+    "subtitle": "Crea un sitio personal hermoso en minutos y muestra tu trabajo como un profesional. Totalmente gratis para diseñadores, desarrolladores, fotógrafos y creadores que cuidan los detalles.",
+    "startFree": "Empezar gratis",
+    "viewDemo": "Ver demo",
+    "smallPrint": "Gratis para siempre · Sin tarjeta · Sin suscripciones"
+  },
+  "footer": {
+    "tagline": "Construye tu presencia profesional. Impresiona a cada cliente. Totalmente gratis.",
+    "product": "Producto",
+    "company": "Empresa",
+    "dashboard": "Panel",
+    "rights": "Todos los derechos reservados.",
+    "designedBy": "Diseñado y desarrollado por"
+  },
+  "auth": {
+    "welcomeBack": "Bienvenido de nuevo",
+    "createAccount": "Crea tu cuenta gratis",
+    "signIn": "Inicia sesión.",
+    "startBuilding": "Empieza a construir.",
+    "continueDash": "Continúa a tu panel.",
+    "freeForever": "Gratis para siempre — sin tarjeta.",
+    "continueGoogle": "Continuar con Google",
+    "or": "o",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "password": "Contraseña (mín. 6 caracteres)",
+    "pleaseWait": "Espera por favor…",
+    "submitCreate": "Crear cuenta",
+    "submitSignIn": "Iniciar sesión",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "newHere": "¿Eres nuevo en Portfolio Pro?",
+    "createOne": "Crea una",
+    "checkInbox": "Revisa tu correo",
+    "verifySent": "Enviamos un enlace de verificación a {{email}}. Haz clic para activar tu cuenta.",
+    "backToSignIn": "Volver a iniciar sesión"
+  },
+  "dashboard": {
+    "overview": "Resumen",
+    "builder": "Constructor",
+    "projects": "Proyectos",
+    "analytics": "Analíticas",
+    "settings": "Ajustes",
+    "signOut": "Cerrar sesión",
+    "viewPortfolio": "Ver portafolio",
+    "openBuilder": "Abrir constructor"
+  }
+}

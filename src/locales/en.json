@@ -1,0 +1,76 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "close": "Close",
+    "language": "Language"
+  },
+  "nav": {
+    "templates": "Templates",
+    "demo": "Demo",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "startFree": "Start free",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "menu": "Menu"
+  },
+  "hero": {
+    "badge": "New — AI-powered portfolio builder",
+    "titleA": "Create a portfolio that",
+    "titleB": "gets you hired.",
+    "subtitle": "Build a beautiful personal website in minutes and showcase your work like a professional. Completely free for designers, developers, photographers and creators who care about craft.",
+    "startFree": "Start free",
+    "viewDemo": "View demo",
+    "smallPrint": "Free forever · No credit card required · No subscriptions"
+  },
+  "footer": {
+    "tagline": "Build your professional presence. Impress every client. Completely free.",
+    "product": "Product",
+    "company": "Company",
+    "dashboard": "Dashboard",
+    "rights": "All rights reserved.",
+    "designedBy": "Designed & Developed by"
+  },
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create your free account",
+    "signIn": "Sign in.",
+    "startBuilding": "Start building.",
+    "continueDash": "Continue to your dashboard.",
+    "freeForever": "Free forever — no credit card.",
+    "continueGoogle": "Continue with Google",
+    "or": "or",
+    "fullName": "Full name",
+    "email": "Email",
+    "password": "Password (min 6 chars)",
+    "pleaseWait": "Please wait…",
+    "submitCreate": "Create account",
+    "submitSignIn": "Sign in",
+    "haveAccount": "Already have an account?",
+    "newHere": "New to Portfolio Pro?",
+    "createOne": "Create one",
+    "checkInbox": "Check your inbox",
+    "verifySent": "We sent a verification link to {{email}}. Click it to activate your account.",
+    "backToSignIn": "Back to sign in"
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "builder": "Builder",
+    "projects": "Projects",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "viewPortfolio": "View portfolio",
+    "openBuilder": "Open builder"
+  }
+}

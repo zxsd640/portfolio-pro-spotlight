@@ -1,0 +1,76 @@
+{
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "loading": "Wird geladen…",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "search": "Suchen",
+    "close": "Schließen",
+    "language": "Sprache"
+  },
+  "nav": {
+    "templates": "Vorlagen",
+    "demo": "Demo",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "signIn": "Anmelden",
+    "startFree": "Kostenlos starten",
+    "soundOn": "Ton an",
+    "soundOff": "Ton aus",
+    "menu": "Menü"
+  },
+  "hero": {
+    "badge": "Neu — KI-gestützter Portfolio-Builder",
+    "titleA": "Erstelle ein Portfolio, das",
+    "titleB": "dich anstellen lässt.",
+    "subtitle": "Baue in Minuten eine beeindruckende persönliche Website und präsentiere deine Arbeit professionell. Komplett kostenlos für Designer, Entwickler, Fotografen und Kreative mit Anspruch.",
+    "startFree": "Kostenlos starten",
+    "viewDemo": "Demo ansehen",
+    "smallPrint": "Für immer kostenlos · Keine Kreditkarte · Kein Abo"
+  },
+  "footer": {
+    "tagline": "Bau deine professionelle Präsenz auf. Beeindrucke jeden Kunden. Komplett kostenlos.",
+    "product": "Produkt",
+    "company": "Unternehmen",
+    "dashboard": "Dashboard",
+    "rights": "Alle Rechte vorbehalten.",
+    "designedBy": "Entworfen und entwickelt von"
+  },
+  "auth": {
+    "welcomeBack": "Willkommen zurück",
+    "createAccount": "Erstelle dein kostenloses Konto",
+    "signIn": "Anmelden.",
+    "startBuilding": "Leg los.",
+    "continueDash": "Weiter zum Dashboard.",
+    "freeForever": "Für immer kostenlos — keine Kreditkarte.",
+    "continueGoogle": "Mit Google fortfahren",
+    "or": "oder",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "password": "Passwort (mind. 6 Zeichen)",
+    "pleaseWait": "Bitte warten…",
+    "submitCreate": "Konto erstellen",
+    "submitSignIn": "Anmelden",
+    "haveAccount": "Schon ein Konto?",
+    "newHere": "Neu bei Portfolio Pro?",
+    "createOne": "Erstelle eines",
+    "checkInbox": "Sieh in deinem Posteingang nach",
+    "verifySent": "Wir haben einen Bestätigungslink an {{email}} gesendet. Klicke ihn an, um dein Konto zu aktivieren.",
+    "backToSignIn": "Zurück zur Anmeldung"
+  },
+  "dashboard": {
+    "overview": "Übersicht",
+    "builder": "Builder",
+    "projects": "Projekte",
+    "analytics": "Analytik",
+    "settings": "Einstellungen",
+    "signOut": "Abmelden",
+    "viewPortfolio": "Portfolio ansehen",
+    "openBuilder": "Builder öffnen"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "loading": "Carregando…",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "search": "Buscar",
+    "close": "Fechar",
+    "language": "Idioma"
+  },
+  "nav": {
+    "templates": "Modelos",
+    "demo": "Demo",
+    "about": "Sobre",
+    "contact": "Contato",
+    "signIn": "Entrar",
+    "startFree": "Começar grátis",
+    "soundOn": "Som ligado",
+    "soundOff": "Som desligado",
+    "menu": "Menu"
+  },
+  "hero": {
+    "badge": "Novo — Construtor de portfólio com IA",
+    "titleA": "Crie um portfólio que",
+    "titleB": "te contrata.",
+    "subtitle": "Monte um site pessoal lindo em minutos e mostre seu trabalho como um profissional. Totalmente grátis para designers, desenvolvedores, fotógrafos e criadores que se importam com cada detalhe.",
+    "startFree": "Começar grátis",
+    "viewDemo": "Ver demo",
+    "smallPrint": "Grátis para sempre · Sem cartão · Sem assinatura"
+  },
+  "footer": {
+    "tagline": "Construa sua presença profissional. Impressione cada cliente. Totalmente grátis.",
+    "product": "Produto",
+    "company": "Empresa",
+    "dashboard": "Painel",
+    "rights": "Todos os direitos reservados.",
+    "designedBy": "Projetado e desenvolvido por"
+  },
+  "auth": {
+    "welcomeBack": "Bem-vindo de volta",
+    "createAccount": "Crie sua conta grátis",
+    "signIn": "Entrar.",
+    "startBuilding": "Comece a criar.",
+    "continueDash": "Continue para seu painel.",
+    "freeForever": "Grátis para sempre — sem cartão.",
+    "continueGoogle": "Continuar com Google",
+    "or": "ou",
+    "fullName": "Nome completo",
+    "email": "E-mail",
+    "password": "Senha (mín. 6 caracteres)",
+    "pleaseWait": "Aguarde…",
+    "submitCreate": "Criar conta",
+    "submitSignIn": "Entrar",
+    "haveAccount": "Já tem uma conta?",
+    "newHere": "Novo no Portfolio Pro?",
+    "createOne": "Crie uma",
+    "checkInbox": "Verifique sua caixa de entrada",
+    "verifySent": "Enviamos um link de verificação para {{email}}. Clique para ativar sua conta.",
+    "backToSignIn": "Voltar ao login"
+  },
+  "dashboard": {
+    "overview": "Visão geral",
+    "builder": "Construtor",
+    "projects": "Projetos",
+    "analytics": "Análises",
+    "settings": "Configurações",
+    "signOut": "Sair",
+    "viewPortfolio": "Ver portfólio",
+    "openBuilder": "Abrir construtor"
+  }
+}
