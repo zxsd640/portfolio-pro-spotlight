@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Wand2, Plus, Trash2, Save, Sparkles, Check, AlertCircle, ChevronRight, ChevronLeft } from "lucide-react";
+import { Wand2, Plus, Trash2, Save, Sparkles, Check, AlertCircle, ChevronRight, ChevronLeft, RefreshCw, Pencil } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useSound } from "@/lib/sound";
-import { polishPortfolio } from "@/lib/ai";
+import { polishPortfolio, generateBios, type BioVariant, type BioStyle } from "@/lib/ai";
 
 export const Route = createFileRoute("/dashboard/builder")({
   component: BuilderPage,
