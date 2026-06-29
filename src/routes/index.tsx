@@ -57,6 +57,8 @@ function LandingPage() {
       <Hero />
       <TrustedBy />
       <Features />
+      <ProductPreview />
+      <Comparison />
       <Templates />
       <Showcase />
       <Testimonials />
