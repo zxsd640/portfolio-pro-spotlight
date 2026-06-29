@@ -57,6 +57,8 @@ function LandingPage() {
       <Hero />
       <TrustedBy />
       <Features />
+      <ProductPreview />
+      <Comparison />
       <Templates />
       <Showcase />
       <Testimonials />
@@ -204,20 +206,179 @@ function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string
 
 /* ---------------- Trusted by ---------------- */
 function TrustedBy() {
-  const logos = ["NOVA", "Lumen", "Pixel&Co", "Aperture", "FORM", "Northwind", "Helio", "Quartz", "Atlas", "Mirage"];
   return (
-    <section className="relative py-16">
-      <p className="mb-8 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        Trusted by 40,000+ creators and teams
-      </p>
-      <div className="relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]">
-        <div className="animate-marquee flex w-max gap-14 px-6">
-          {[...logos, ...logos].map((l, i) => (
-            <span key={i} className="whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-muted-foreground/70">
-              {l}
-            </span>
+    <section className="relative py-14">
+      <div className="mx-auto max-w-3xl px-4 text-center">
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          Built for freelancers, designers & developers worldwide
+        </p>
+        <p className="mt-3 text-sm text-foreground/70">
+          Portfolio Pro is a brand-new platform — join our growing community of creators
+          shaping it from day one.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Product Preview ---------------- */
+function ProductPreview() {
+  const [tab, setTab] = useState<"dashboard" | "builder">("dashboard");
+  return (
+    <section className="relative px-4 py-20">
+      <SectionHeader
+        eyebrow="See it in action"
+        title="A real product, not a mockup."
+        sub="Take a peek inside the dashboard and the drag-and-drop builder."
+      />
+      <div className="mx-auto mt-10 max-w-5xl">
+        <div className="mb-5 flex justify-center gap-2">
+          {(["dashboard", "builder"] as const).map((k) => (
+            <button
+              key={k}
+              data-sound
+              onClick={() => setTab(k)}
+              className={[
+                "rounded-xl px-4 py-2 text-sm font-medium transition-all cursor-pointer",
+                tab === k ? "brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]" : "glass-panel text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {k === "dashboard" ? "Dashboard" : "Drag & Drop Builder"}
+            </button>
           ))}
         </div>
+        <div className="glass-panel overflow-hidden rounded-3xl p-3 shadow-[0_40px_120px_-30px_oklch(0.55_0.25_295/0.45)]">
+          <div className="flex items-center gap-1.5 px-3 py-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
+            <span className="ms-3 text-[11px] text-muted-foreground">
+              portfoliopro.app/{tab === "dashboard" ? "dashboard" : "builder"}
+            </span>
+          </div>
+          {tab === "dashboard" ? <PreviewDashboard /> : <PreviewBuilder />}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <Link
+            to="/demo"
+            data-sound
+            className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10"
+          >
+            Open the live demo
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PreviewDashboard() {
+  const stats = [
+    { label: "Total views", value: "12,438", icon: BarChart3 },
+    { label: "Projects", value: "8", icon: Layers },
+    { label: "Likes", value: "342", icon: Heart },
+  ];
+  return (
+    <div className="rounded-2xl bg-black/30 p-5">
+      <div className="grid grid-cols-3 gap-3">
+        {stats.map((s) => (
+          <div key={s.label} className="glass-panel rounded-xl p-3">
+            <s.icon className="h-4 w-4 text-[color:var(--violet)]" />
+            <p className="mt-2 text-lg font-semibold">{s.value}</p>
+            <p className="text-[11px] text-muted-foreground">{s.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 glass-panel rounded-xl p-4">
+        <p className="text-xs text-muted-foreground">Views, last 14 days</p>
+        <div className="mt-3 flex h-24 items-end gap-1.5">
+          {[30, 45, 28, 60, 75, 50, 82, 95, 70, 88, 100, 78, 92, 110].map((h, i) => (
+            <div
+              key={i}
+              className="flex-1 rounded-t-md brand-gradient opacity-80"
+              style={{ height: `${h}%` }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PreviewBuilder() {
+  const blocks = ["Hero", "About", "Projects", "Experience", "Skills", "Contact"];
+  return (
+    <div className="grid grid-cols-12 gap-3 rounded-2xl bg-black/30 p-5">
+      <div className="col-span-4 glass-panel rounded-xl p-3">
+        <p className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Sections</p>
+        <ul className="space-y-1.5">
+          {blocks.map((b, i) => (
+            <li
+              key={b}
+              className={[
+                "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs",
+                i === 1 ? "bg-white/10 text-foreground" : "text-muted-foreground hover:bg-white/5",
+              ].join(" ")}
+            >
+              <span className="h-1 w-1 rounded-full bg-[color:var(--violet)]" />
+              {b}
+              <span className="ms-auto text-[10px] text-muted-foreground/60">⋮⋮</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="col-span-8 glass-panel rounded-xl p-4">
+        <div className="h-20 rounded-lg brand-gradient opacity-90" />
+        <div className="mt-3 h-3 w-2/3 rounded-full bg-white/10" />
+        <div className="mt-2 h-3 w-1/2 rounded-full bg-white/10" />
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="aspect-[4/3] rounded-lg bg-white/5" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Comparison ---------------- */
+function Comparison() {
+  const rows = [
+    { feature: "Truly free, no paywalled features", pp: true, others: "Limited trial / paid tiers" },
+    { feature: "Built for personal portfolios", pp: true, others: "General website / network" },
+    { feature: "AI writing assistant included", pp: true, others: "Add-on or unavailable" },
+    { feature: "Custom domain at no cost", pp: true, others: "Paid plan required" },
+    { feature: "Own your content, export anytime", pp: true, others: "Lock-in common" },
+  ];
+  return (
+    <section className="relative px-4 py-24">
+      <SectionHeader
+        eyebrow="Why Portfolio Pro"
+        title="Different from Behance, Wix and Squarespace."
+        sub="They're great at what they do. We're laser-focused on one thing: getting your work in front of the right people."
+      />
+      <div className="mx-auto mt-12 max-w-4xl glass-panel overflow-hidden rounded-2xl">
+        <div className="grid grid-cols-12 border-b border-white/10 bg-white/5 px-5 py-3 text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="col-span-6">Feature</div>
+          <div className="col-span-3 text-center">Portfolio Pro</div>
+          <div className="col-span-3 text-center">Behance / Wix / Squarespace</div>
+        </div>
+        {rows.map((r) => (
+          <div key={r.feature} className="grid grid-cols-12 items-center border-b border-white/5 px-5 py-4 text-sm last:border-b-0">
+            <div className="col-span-6 text-foreground/90">{r.feature}</div>
+            <div className="col-span-3 flex justify-center">
+              {r.pp ? (
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full brand-gradient text-white">
+                  <Star className="h-3.5 w-3.5 fill-current" />
+                </span>
+              ) : (
+                <Minus className="h-4 w-4 text-muted-foreground" />
+              )}
+            </div>
+            <div className="col-span-3 text-center text-xs text-muted-foreground">{r.others}</div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -341,35 +502,150 @@ function Showcase() {
   );
 }
 
-/* ---------------- Testimonials ---------------- */
+/* ---------------- Testimonials (real submissions) ---------------- */
+type Review = { id: string; quote: string; name: string; role: string; rating: number; createdAt: number };
+const REVIEWS_KEY = "pp.reviews.v1";
+
 function Testimonials() {
-  const items = [
-    { quote: "I got 3 client inquiries in the first week after launching my Portfolio Pro site. The templates feel genuinely high-end.", name: "Elena Marquez", role: "Brand Designer" },
-    { quote: "It replaced my Webflow + Notion + Linktree stack. The builder is fast and the result looks like an agency made it.", name: "David Okoye", role: "Full-stack Developer" },
-    { quote: "The AI case-study assistant alone is worth it. Writing project descriptions used to take me a whole afternoon.", name: "Yuki Tanaka", role: "Product Designer" },
-    { quote: "Clean, fast, and beautifully animated. My photography clients keep asking who built my site.", name: "Priya Sharma", role: "Photographer" },
-  ];
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [draft, setDraft] = useState({ quote: "", name: "", role: "", rating: 5 });
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(REVIEWS_KEY);
+      if (raw) setReviews(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!draft.quote.trim() || !draft.name.trim()) return;
+    const next: Review[] = [
+      { id: crypto.randomUUID(), ...draft, createdAt: Date.now() },
+      ...reviews,
+    ].slice(0, 24);
+    setReviews(next);
+    try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(next)); } catch {}
+    setDraft({ quote: "", name: "", role: "", rating: 5 });
+    setShowForm(false);
+  };
+
   return (
     <section className="relative px-4 py-28">
-      <SectionHeader eyebrow="Loved by creators" title="Words from real makers." />
-      <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2">
-        {items.map((t) => (
-          <figure key={t.name} className="glass-panel relative rounded-2xl p-6 transition-transform hover:-translate-y-1">
-            <div className="flex gap-0.5 text-[color:var(--violet)]">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-current" />
+      <SectionHeader
+        eyebrow="Community reviews"
+        title="What real creators say."
+        sub="We're brand new — no fake quotes here. Share your experience to help others."
+      />
+      <div className="mx-auto mt-12 max-w-6xl">
+        {reviews.length === 0 ? (
+          <div className="glass-panel mx-auto max-w-xl rounded-2xl p-8 text-center">
+            <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient text-white">
+              <Star className="h-5 w-5 fill-current" />
+            </div>
+            <h3 className="text-lg font-semibold">Be the first to review Portfolio Pro</h3>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+              No fabricated testimonials — your honest words will live here.
+            </p>
+            <button
+              data-sound
+              onClick={() => setShowForm(true)}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03] cursor-pointer"
+            >
+              Write a review
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {reviews.map((r) => (
+                <figure key={r.id} className="glass-panel relative rounded-2xl p-6 transition-transform hover:-translate-y-1">
+                  <div className="flex gap-0.5 text-[color:var(--violet)]">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className={["h-3.5 w-3.5", i < r.rating ? "fill-current" : "opacity-30"].join(" ")} />
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground/90">"{r.quote}"</blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3">
+                    <div className="h-9 w-9 rounded-full brand-gradient" />
+                    <div>
+                      <p className="text-sm font-semibold">{r.name}</p>
+                      {r.role && <p className="text-xs text-muted-foreground">{r.role}</p>}
+                    </div>
+                  </figcaption>
+                </figure>
               ))}
             </div>
-            <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
-            <figcaption className="mt-5 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full brand-gradient" />
-              <div>
-                <p className="text-sm font-semibold">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
+            <div className="mt-8 flex justify-center">
+              <button
+                data-sound
+                onClick={() => setShowForm(true)}
+                className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10 cursor-pointer"
+              >
+                Add your review
+              </button>
+            </div>
+          </>
+        )}
+
+        {showForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={() => setShowForm(false)}>
+            <form
+              onSubmit={submit}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md glass-panel rounded-2xl p-6 animate-fade-up"
+            >
+              <h3 className="text-lg font-semibold">Share your experience</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Honest reviews only — no marketing copy.</p>
+              <div className="mt-4 flex gap-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setDraft((d) => ({ ...d, rating: n }))}
+                    className="cursor-pointer"
+                    aria-label={`${n} stars`}
+                  >
+                    <Star className={["h-6 w-6 text-[color:var(--violet)]", n <= draft.rating ? "fill-current" : "opacity-30"].join(" ")} />
+                  </button>
+                ))}
               </div>
-            </figcaption>
-          </figure>
-        ))}
+              <textarea
+                required
+                rows={4}
+                placeholder="What did you think?"
+                value={draft.quote}
+                onChange={(e) => setDraft((d) => ({ ...d, quote: e.target.value }))}
+                className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm outline-none focus:border-[color:var(--violet)]"
+              />
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <input
+                  required
+                  placeholder="Your name"
+                  value={draft.name}
+                  onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
+                />
+                <input
+                  placeholder="Role (optional)"
+                  value={draft.role}
+                  onChange={(e) => setDraft((d) => ({ ...d, role: e.target.value }))}
+                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
+                />
+              </div>
+              <div className="mt-5 flex justify-end gap-2">
+                <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-white/5 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" data-sound className="rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white cursor-pointer">
+                  Post review
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -402,6 +678,15 @@ function WhyFree() {
           Portfolio Pro gives creators a beautiful professional portfolio experience with no
           subscriptions and no hidden costs.
         </p>
+        <div className="mx-auto mt-6 max-w-xl rounded-2xl glass-panel p-4 text-left">
+          <p className="text-xs uppercase tracking-wider text-[color:var(--violet)]">How is it sustained?</p>
+          <p className="mt-1.5 text-sm text-foreground/80">
+            Free forever for the core builder. In the future we plan to introduce optional
+            <span className="font-medium text-foreground"> Pro features </span>
+            (custom domains, advanced analytics, team workspaces) to keep the lights on —
+            everything you see today stays free.
+          </p>
+        </div>
       </div>
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f, i) => (
@@ -489,7 +774,7 @@ function CTA() {
             Your next client is one portfolio away.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Join 40,000+ creators building their professional presence on Portfolio Pro — completely free.
+            Join our growing community of creators building their professional presence on Portfolio Pro — completely free.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
