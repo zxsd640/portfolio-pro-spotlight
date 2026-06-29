@@ -774,7 +774,7 @@ function CTA() {
             Your next client is one portfolio away.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Join 40,000+ creators building their professional presence on Portfolio Pro — completely free.
+            Join our growing community of creators building their professional presence on Portfolio Pro — completely free.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
