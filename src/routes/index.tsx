@@ -678,6 +678,15 @@ function WhyFree() {
           Portfolio Pro gives creators a beautiful professional portfolio experience with no
           subscriptions and no hidden costs.
         </p>
+        <div className="mx-auto mt-6 max-w-xl rounded-2xl glass-panel p-4 text-left">
+          <p className="text-xs uppercase tracking-wider text-[color:var(--violet)]">How is it sustained?</p>
+          <p className="mt-1.5 text-sm text-foreground/80">
+            Free forever for the core builder. In the future we plan to introduce optional
+            <span className="font-medium text-foreground"> Pro features </span>
+            (custom domains, advanced analytics, team workspaces) to keep the lights on —
+            everything you see today stays free.
+          </p>
+        </div>
       </div>
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f, i) => (
