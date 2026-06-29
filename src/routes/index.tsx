@@ -206,20 +206,179 @@ function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string
 
 /* ---------------- Trusted by ---------------- */
 function TrustedBy() {
-  const logos = ["NOVA", "Lumen", "Pixel&Co", "Aperture", "FORM", "Northwind", "Helio", "Quartz", "Atlas", "Mirage"];
   return (
-    <section className="relative py-16">
-      <p className="mb-8 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        Trusted by 40,000+ creators and teams
-      </p>
-      <div className="relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]">
-        <div className="animate-marquee flex w-max gap-14 px-6">
-          {[...logos, ...logos].map((l, i) => (
-            <span key={i} className="whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-muted-foreground/70">
-              {l}
-            </span>
+    <section className="relative py-14">
+      <div className="mx-auto max-w-3xl px-4 text-center">
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          Built for freelancers, designers & developers worldwide
+        </p>
+        <p className="mt-3 text-sm text-foreground/70">
+          Portfolio Pro is a brand-new platform — join our growing community of creators
+          shaping it from day one.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Product Preview ---------------- */
+function ProductPreview() {
+  const [tab, setTab] = useState<"dashboard" | "builder">("dashboard");
+  return (
+    <section className="relative px-4 py-20">
+      <SectionHeader
+        eyebrow="See it in action"
+        title="A real product, not a mockup."
+        sub="Take a peek inside the dashboard and the drag-and-drop builder."
+      />
+      <div className="mx-auto mt-10 max-w-5xl">
+        <div className="mb-5 flex justify-center gap-2">
+          {(["dashboard", "builder"] as const).map((k) => (
+            <button
+              key={k}
+              data-sound
+              onClick={() => setTab(k)}
+              className={[
+                "rounded-xl px-4 py-2 text-sm font-medium transition-all cursor-pointer",
+                tab === k ? "brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]" : "glass-panel text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {k === "dashboard" ? "Dashboard" : "Drag & Drop Builder"}
+            </button>
           ))}
         </div>
+        <div className="glass-panel overflow-hidden rounded-3xl p-3 shadow-[0_40px_120px_-30px_oklch(0.55_0.25_295/0.45)]">
+          <div className="flex items-center gap-1.5 px-3 py-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
+            <span className="ms-3 text-[11px] text-muted-foreground">
+              portfoliopro.app/{tab === "dashboard" ? "dashboard" : "builder"}
+            </span>
+          </div>
+          {tab === "dashboard" ? <PreviewDashboard /> : <PreviewBuilder />}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <Link
+            to="/demo"
+            data-sound
+            className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10"
+          >
+            Open the live demo
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PreviewDashboard() {
+  const stats = [
+    { label: "Total views", value: "12,438", icon: BarChart3 },
+    { label: "Projects", value: "8", icon: Layers },
+    { label: "Likes", value: "342", icon: Heart },
+  ];
+  return (
+    <div className="rounded-2xl bg-black/30 p-5">
+      <div className="grid grid-cols-3 gap-3">
+        {stats.map((s) => (
+          <div key={s.label} className="glass-panel rounded-xl p-3">
+            <s.icon className="h-4 w-4 text-[color:var(--violet)]" />
+            <p className="mt-2 text-lg font-semibold">{s.value}</p>
+            <p className="text-[11px] text-muted-foreground">{s.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 glass-panel rounded-xl p-4">
+        <p className="text-xs text-muted-foreground">Views, last 14 days</p>
+        <div className="mt-3 flex h-24 items-end gap-1.5">
+          {[30, 45, 28, 60, 75, 50, 82, 95, 70, 88, 100, 78, 92, 110].map((h, i) => (
+            <div
+              key={i}
+              className="flex-1 rounded-t-md brand-gradient opacity-80"
+              style={{ height: `${h}%` }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PreviewBuilder() {
+  const blocks = ["Hero", "About", "Projects", "Experience", "Skills", "Contact"];
+  return (
+    <div className="grid grid-cols-12 gap-3 rounded-2xl bg-black/30 p-5">
+      <div className="col-span-4 glass-panel rounded-xl p-3">
+        <p className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Sections</p>
+        <ul className="space-y-1.5">
+          {blocks.map((b, i) => (
+            <li
+              key={b}
+              className={[
+                "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs",
+                i === 1 ? "bg-white/10 text-foreground" : "text-muted-foreground hover:bg-white/5",
+              ].join(" ")}
+            >
+              <span className="h-1 w-1 rounded-full bg-[color:var(--violet)]" />
+              {b}
+              <span className="ms-auto text-[10px] text-muted-foreground/60">⋮⋮</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="col-span-8 glass-panel rounded-xl p-4">
+        <div className="h-20 rounded-lg brand-gradient opacity-90" />
+        <div className="mt-3 h-3 w-2/3 rounded-full bg-white/10" />
+        <div className="mt-2 h-3 w-1/2 rounded-full bg-white/10" />
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="aspect-[4/3] rounded-lg bg-white/5" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Comparison ---------------- */
+function Comparison() {
+  const rows = [
+    { feature: "Truly free, no paywalled features", pp: true, others: "Limited trial / paid tiers" },
+    { feature: "Built for personal portfolios", pp: true, others: "General website / network" },
+    { feature: "AI writing assistant included", pp: true, others: "Add-on or unavailable" },
+    { feature: "Custom domain at no cost", pp: true, others: "Paid plan required" },
+    { feature: "Own your content, export anytime", pp: true, others: "Lock-in common" },
+  ];
+  return (
+    <section className="relative px-4 py-24">
+      <SectionHeader
+        eyebrow="Why Portfolio Pro"
+        title="Different from Behance, Wix and Squarespace."
+        sub="They're great at what they do. We're laser-focused on one thing: getting your work in front of the right people."
+      />
+      <div className="mx-auto mt-12 max-w-4xl glass-panel overflow-hidden rounded-2xl">
+        <div className="grid grid-cols-12 border-b border-white/10 bg-white/5 px-5 py-3 text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="col-span-6">Feature</div>
+          <div className="col-span-3 text-center">Portfolio Pro</div>
+          <div className="col-span-3 text-center">Behance / Wix / Squarespace</div>
+        </div>
+        {rows.map((r) => (
+          <div key={r.feature} className="grid grid-cols-12 items-center border-b border-white/5 px-5 py-4 text-sm last:border-b-0">
+            <div className="col-span-6 text-foreground/90">{r.feature}</div>
+            <div className="col-span-3 flex justify-center">
+              {r.pp ? (
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full brand-gradient text-white">
+                  <Star className="h-3.5 w-3.5 fill-current" />
+                </span>
+              ) : (
+                <Minus className="h-4 w-4 text-muted-foreground" />
+              )}
+            </div>
+            <div className="col-span-3 text-center text-xs text-muted-foreground">{r.others}</div>
+          </div>
+        ))}
       </div>
     </section>
   );
