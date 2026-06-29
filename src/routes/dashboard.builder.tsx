@@ -238,14 +238,179 @@ function TextArea({ label, ...props }: { label: string } & React.TextareaHTMLAtt
 }
 
 function BasicsStep({ form, update }: any) {
+  const { play } = useSound();
+  const [variants, setVariants] = useState<BioVariant[]>([]);
+  const [genLoading, setGenLoading] = useState(false);
+  const [genError, setGenError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<BioStyle | null>(null);
+  const [editing, setEditing] = useState<BioStyle | null>(null);
+
+  const wordCount = (s: string) => (s.trim() ? s.trim().split(/\s+/).length : 0);
+
+  const generate = async () => {
+    setGenLoading(true);
+    setGenError(null);
+    try {
+      const r = await generateBios({
+        data: {
+          display_name: form.display_name,
+          title: form.title,
+          bio: form.bio,
+          skills: (form.skills || []).map((s: any) => s.name).filter(Boolean),
+          seed: Date.now(),
+        },
+      });
+      setVariants(r.variants);
+      play("success");
+    } catch (e: any) {
+      setGenError(e?.message || "Could not generate bios");
+      play("notify");
+    } finally {
+      setGenLoading(false);
+    }
+  };
+
+  const pick = (v: BioVariant) => {
+    setSelected(v.style);
+    update("bio", v.text);
+    play("click");
+  };
+
+  const styleLabel: Record<BioStyle, string> = {
+    professional: "Professional",
+    creative: "Creative",
+    bold: "Bold",
+  };
+  const styleAccent: Record<BioStyle, string> = {
+    professional: "from-sky-400/20 to-blue-500/20 border-sky-400/30",
+    creative: "from-fuchsia-400/20 to-violet-500/20 border-fuchsia-400/30",
+    bold: "from-amber-400/20 to-rose-500/20 border-amber-400/30",
+  };
+
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <Input label="Full name" value={form.display_name} onChange={(e) => update("display_name", e.target.value)} placeholder="Ada Lovelace" />
-      <Input label="Username (your URL)" value={form.username} onChange={(e) => update("username", e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))} placeholder="ada" />
-      <Input label="Title" value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Frontend Developer" />
-      <Input label="Location" value={form.location} onChange={(e) => update("location", e.target.value)} placeholder="Remote · London" />
-      <div className="sm:col-span-2">
-        <TextArea label="Short bio" value={form.bio} onChange={(e) => update("bio", e.target.value)} placeholder="What do you do? What drives you?" />
+    <div className="space-y-6">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Input label="Full name" value={form.display_name} onChange={(e) => update("display_name", e.target.value)} placeholder="Ada Lovelace" />
+        <Input label="Username (your URL)" value={form.username} onChange={(e) => update("username", e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))} placeholder="ada" />
+        <Input label="Title" value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Frontend Developer" />
+        <Input label="Location" value={form.location} onChange={(e) => update("location", e.target.value)} placeholder="Remote · London" />
+        <div className="sm:col-span-2">
+          <label className="block">
+            <span className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
+              <span>Short bio</span>
+              <span className="text-[10px] tabular-nums">{wordCount(form.bio)} words</span>
+            </span>
+            <textarea
+              value={form.bio}
+              onChange={(e) => update("bio", e.target.value)}
+              placeholder="What do you do? What drives you?"
+              className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm outline-none focus:border-[color:var(--royal)] transition-colors min-h-[100px]"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] p-4">
+        <div className="flex items-start gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-xl brand-gradient">
+            <Sparkles className="h-4 w-4 text-white" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold">AI bio studio</p>
+            <p className="text-xs text-muted-foreground">Three voices, instantly. Pick the one that sounds like you — or remix.</p>
+          </div>
+          <button
+            onClick={generate}
+            disabled={genLoading}
+            data-sound
+            data-sound-hover
+            className="inline-flex items-center gap-1.5 rounded-xl brand-gradient px-3 py-2 text-xs text-white disabled:opacity-60"
+          >
+            {genLoading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Wand2 className="h-3 w-3" />}
+            {genLoading ? "Generating…" : variants.length ? "Regenerate" : "Generate 3 bios"}
+          </button>
+        </div>
+
+        {genError && (
+          <div className="mt-3 flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs text-red-300">
+            <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" /> {genError}
+          </div>
+        )}
+
+        {genLoading && !variants.length && (
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="h-40 animate-pulse rounded-xl bg-white/5" />
+            ))}
+          </div>
+        )}
+
+        {!!variants.length && (
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {variants.map((v) => {
+              const isSelected = selected === v.style;
+              const isEditing = editing === v.style;
+              return (
+                <div
+                  key={v.style}
+                  className={[
+                    "group relative rounded-xl border bg-gradient-to-br p-3 transition-all",
+                    styleAccent[v.style],
+                    isSelected ? "ring-2 ring-[color:var(--royal)]" : "hover:translate-y-[-2px]",
+                  ].join(" ")}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-widest text-foreground/80">{styleLabel[v.style]}</span>
+                    {isSelected && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-[color:var(--royal)]/20 px-2 py-0.5 text-[10px] text-[color:var(--cyan)]">
+                        <Check className="h-2.5 w-2.5" /> Selected
+                      </span>
+                    )}
+                  </div>
+                  {isEditing ? (
+                    <textarea
+                      autoFocus
+                      value={v.text}
+                      onChange={(e) =>
+                        setVariants((prev) => prev.map((x) => (x.style === v.style ? { ...x, text: e.target.value } : x)))
+                      }
+                      onBlur={() => {
+                        setEditing(null);
+                        if (isSelected) update("bio", v.text);
+                      }}
+                      className="mt-2 min-h-[110px] w-full rounded-lg bg-black/30 border border-white/10 p-2 text-xs outline-none focus:border-[color:var(--royal)]"
+                    />
+                  ) : (
+                    <p className="mt-2 text-xs leading-relaxed text-foreground/90">{v.text || "—"}</p>
+                  )}
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-[10px] tabular-nums text-muted-foreground">{wordCount(v.text)} words</span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setEditing(isEditing ? null : v.style)}
+                        data-sound
+                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                      >
+                        <Pencil className="h-2.5 w-2.5" /> {isEditing ? "Done" : "Edit"}
+                      </button>
+                      <button
+                        onClick={() => pick(v)}
+                        data-sound
+                        data-sound-hover
+                        className={[
+                          "inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px]",
+                          isSelected ? "bg-white/10 text-foreground" : "brand-gradient text-white",
+                        ].join(" ")}
+                      >
+                        <Check className="h-2.5 w-2.5" /> Use this
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
