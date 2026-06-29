@@ -502,35 +502,150 @@ function Showcase() {
   );
 }
 
-/* ---------------- Testimonials ---------------- */
+/* ---------------- Testimonials (real submissions) ---------------- */
+type Review = { id: string; quote: string; name: string; role: string; rating: number; createdAt: number };
+const REVIEWS_KEY = "pp.reviews.v1";
+
 function Testimonials() {
-  const items = [
-    { quote: "I got 3 client inquiries in the first week after launching my Portfolio Pro site. The templates feel genuinely high-end.", name: "Elena Marquez", role: "Brand Designer" },
-    { quote: "It replaced my Webflow + Notion + Linktree stack. The builder is fast and the result looks like an agency made it.", name: "David Okoye", role: "Full-stack Developer" },
-    { quote: "The AI case-study assistant alone is worth it. Writing project descriptions used to take me a whole afternoon.", name: "Yuki Tanaka", role: "Product Designer" },
-    { quote: "Clean, fast, and beautifully animated. My photography clients keep asking who built my site.", name: "Priya Sharma", role: "Photographer" },
-  ];
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [draft, setDraft] = useState({ quote: "", name: "", role: "", rating: 5 });
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(REVIEWS_KEY);
+      if (raw) setReviews(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!draft.quote.trim() || !draft.name.trim()) return;
+    const next: Review[] = [
+      { id: crypto.randomUUID(), ...draft, createdAt: Date.now() },
+      ...reviews,
+    ].slice(0, 24);
+    setReviews(next);
+    try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(next)); } catch {}
+    setDraft({ quote: "", name: "", role: "", rating: 5 });
+    setShowForm(false);
+  };
+
   return (
     <section className="relative px-4 py-28">
-      <SectionHeader eyebrow="Loved by creators" title="Words from real makers." />
-      <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2">
-        {items.map((t) => (
-          <figure key={t.name} className="glass-panel relative rounded-2xl p-6 transition-transform hover:-translate-y-1">
-            <div className="flex gap-0.5 text-[color:var(--violet)]">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-current" />
+      <SectionHeader
+        eyebrow="Community reviews"
+        title="What real creators say."
+        sub="We're brand new — no fake quotes here. Share your experience to help others."
+      />
+      <div className="mx-auto mt-12 max-w-6xl">
+        {reviews.length === 0 ? (
+          <div className="glass-panel mx-auto max-w-xl rounded-2xl p-8 text-center">
+            <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient text-white">
+              <Star className="h-5 w-5 fill-current" />
+            </div>
+            <h3 className="text-lg font-semibold">Be the first to review Portfolio Pro</h3>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+              No fabricated testimonials — your honest words will live here.
+            </p>
+            <button
+              data-sound
+              onClick={() => setShowForm(true)}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03] cursor-pointer"
+            >
+              Write a review
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {reviews.map((r) => (
+                <figure key={r.id} className="glass-panel relative rounded-2xl p-6 transition-transform hover:-translate-y-1">
+                  <div className="flex gap-0.5 text-[color:var(--violet)]">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className={["h-3.5 w-3.5", i < r.rating ? "fill-current" : "opacity-30"].join(" ")} />
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground/90">"{r.quote}"</blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3">
+                    <div className="h-9 w-9 rounded-full brand-gradient" />
+                    <div>
+                      <p className="text-sm font-semibold">{r.name}</p>
+                      {r.role && <p className="text-xs text-muted-foreground">{r.role}</p>}
+                    </div>
+                  </figcaption>
+                </figure>
               ))}
             </div>
-            <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
-            <figcaption className="mt-5 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full brand-gradient" />
-              <div>
-                <p className="text-sm font-semibold">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
+            <div className="mt-8 flex justify-center">
+              <button
+                data-sound
+                onClick={() => setShowForm(true)}
+                className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10 cursor-pointer"
+              >
+                Add your review
+              </button>
+            </div>
+          </>
+        )}
+
+        {showForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={() => setShowForm(false)}>
+            <form
+              onSubmit={submit}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md glass-panel rounded-2xl p-6 animate-fade-up"
+            >
+              <h3 className="text-lg font-semibold">Share your experience</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Honest reviews only — no marketing copy.</p>
+              <div className="mt-4 flex gap-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setDraft((d) => ({ ...d, rating: n }))}
+                    className="cursor-pointer"
+                    aria-label={`${n} stars`}
+                  >
+                    <Star className={["h-6 w-6 text-[color:var(--violet)]", n <= draft.rating ? "fill-current" : "opacity-30"].join(" ")} />
+                  </button>
+                ))}
               </div>
-            </figcaption>
-          </figure>
-        ))}
+              <textarea
+                required
+                rows={4}
+                placeholder="What did you think?"
+                value={draft.quote}
+                onChange={(e) => setDraft((d) => ({ ...d, quote: e.target.value }))}
+                className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm outline-none focus:border-[color:var(--violet)]"
+              />
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <input
+                  required
+                  placeholder="Your name"
+                  value={draft.name}
+                  onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
+                />
+                <input
+                  placeholder="Role (optional)"
+                  value={draft.role}
+                  onChange={(e) => setDraft((d) => ({ ...d, role: e.target.value }))}
+                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
+                />
+              </div>
+              <div className="mt-5 flex justify-end gap-2">
+                <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-white/5 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" data-sound className="rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white cursor-pointer">
+                  Post review
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </section>
   );
