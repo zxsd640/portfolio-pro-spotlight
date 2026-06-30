@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FolderKanban, BarChart3, Settings, LogOut, Volume2, VolumeX, Wand2, ExternalLink } from "lucide-react";
+import { LayoutDashboard, FolderKanban, BarChart3, Settings, LogOut, Volume2, VolumeX, Wand2, ExternalLink, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSound } from "@/lib/sound";
@@ -21,6 +21,7 @@ const ITEMS = [
   { to: "/dashboard", labelKey: "dashboard.overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/builder", labelKey: "dashboard.builder", icon: Wand2, exact: false },
   { to: "/dashboard/projects", labelKey: "dashboard.projects", icon: FolderKanban, exact: false },
+  { to: "/dashboard/prompts", labelKey: "dashboard.prompts", icon: Sparkles, exact: false },
   { to: "/dashboard/analytics", labelKey: "dashboard.analytics", icon: BarChart3, exact: false },
   { to: "/dashboard/settings", labelKey: "dashboard.settings", icon: Settings, exact: false },
 ] as const;
