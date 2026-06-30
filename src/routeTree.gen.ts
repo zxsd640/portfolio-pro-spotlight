@@ -19,6 +19,7 @@ import { Route as UsernameRouteImport } from './routes/$username'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardPromptsRouteImport } from './routes/dashboard.prompts'
 import { Route as DashboardProjectsRouteImport } from './routes/dashboard.projects'
 import { Route as DashboardBuilderRouteImport } from './routes/dashboard.builder'
 import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard.analytics'
@@ -73,6 +74,11 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardPromptsRoute = DashboardPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardProjectsRoute = DashboardProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
   '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/prompts': typeof DashboardPromptsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
   '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/prompts': typeof DashboardPromptsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
   '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/prompts': typeof DashboardPromptsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/dashboard/analytics'
     | '/dashboard/builder'
     | '/dashboard/projects'
+    | '/dashboard/prompts'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/dashboard/analytics'
     | '/dashboard/builder'
     | '/dashboard/projects'
+    | '/dashboard/prompts'
     | '/dashboard/settings'
     | '/dashboard'
   id:
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/dashboard/analytics'
     | '/dashboard/builder'
     | '/dashboard/projects'
+    | '/dashboard/prompts'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -264,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/prompts': {
+      id: '/dashboard/prompts'
+      path: '/prompts'
+      fullPath: '/dashboard/prompts'
+      preLoaderRoute: typeof DashboardPromptsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/projects': {
       id: '/dashboard/projects'
       path: '/projects'
@@ -292,6 +311,7 @@ interface DashboardRouteChildren {
   DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
   DashboardBuilderRoute: typeof DashboardBuilderRoute
   DashboardProjectsRoute: typeof DashboardProjectsRoute
+  DashboardPromptsRoute: typeof DashboardPromptsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -300,6 +320,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAnalyticsRoute: DashboardAnalyticsRoute,
   DashboardBuilderRoute: DashboardBuilderRoute,
   DashboardProjectsRoute: DashboardProjectsRoute,
+  DashboardPromptsRoute: DashboardPromptsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
