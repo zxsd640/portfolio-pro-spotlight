@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Download, ExternalLink, Heart, MapPin, Share2, Sparkles, Check } from "lucide-react";
+import { ArrowLeft, Download, ExternalLink, Heart, MapPin, Share2, Sparkles, Check, Copy, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { MouseGlow } from "@/components/MouseGlow";
 
@@ -13,15 +13,15 @@ export const Route = createFileRoute("/$username")({
       .eq("username", username)
       .maybeSingle();
     if (!profile) throw notFound();
-    const [{ data: projects }, { data: skills }, { data: experience }, { data: achievements }, { data: socials }, { data: likes }] = await Promise.all([
+    const [{ data: projects }, { data: experience }, { data: achievements }, { data: socials }, { data: prompts }, { data: likes }] = await Promise.all([
       supabase.from("projects").select("*").eq("user_id", profile.id).order("sort_order"),
-      supabase.from("skills").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("experience").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("achievements").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("social_links").select("*").eq("user_id", profile.id).order("sort_order"),
+      supabase.from("prompts").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.rpc("get_portfolio_likes_count", { _profile_id: profile.id }),
     ]);
-    return { profile, projects: projects ?? [], skills: skills ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], likes: (likes as number) ?? 0 };
+    return { profile, projects: projects ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], prompts: prompts ?? [], likes: (likes as number) ?? 0 };
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -57,10 +57,10 @@ function PublicPortfolio() {
   const data = Route.useLoaderData() as any;
   const profile: any = data.profile;
   const projects: any[] = data.projects;
-  const skills: any[] = data.skills;
   const experience: any[] = data.experience;
   const achievements: any[] = data.achievements;
   const socials: any[] = data.socials;
+  const prompts: any[] = data.prompts ?? [];
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(data.likes as number);
   const [copied, setCopied] = useState(false);
@@ -183,19 +183,11 @@ function PublicPortfolio() {
           )}
         </header>
 
-        {skills.length > 0 && (
-          <Section title="Skills">
+        {prompts.length > 0 && (
+          <Section title="Prompt Library">
             <div className="grid gap-3 sm:grid-cols-2">
-              {skills.map((s) => (
-                <div key={s.id} className="rounded-xl bg-white/5 p-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>{s.name}</span>
-                    <span className="text-xs text-muted-foreground">{s.level}%</span>
-                  </div>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/5">
-                    <div className="h-full brand-gradient" style={{ width: `${s.level}%` }} />
-                  </div>
-                </div>
+              {prompts.map((p) => (
+                <PromptCard key={p.id} prompt={p} />
               ))}
             </div>
           </Section>
@@ -266,5 +258,60 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h2 className="text-xs uppercase tracking-widest text-[color:var(--violet)]">{title}</h2>
       <div className="mt-4">{children}</div>
     </section>
+  );
+}
+
+function PromptCard({ prompt }: { prompt: any }) {
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(prompt.body || "");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {}
+  };
+  return (
+    <div className="group glass-panel rounded-2xl p-5 transition-all hover:-translate-y-1">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="truncate text-base font-semibold">{prompt.title}</h3>
+          {prompt.category && (
+            <span className="mt-1 inline-block rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+              {prompt.category}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={copy}
+          aria-label="Copy prompt"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/5 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+        >
+          {copied ? <Check className="h-3.5 w-3.5 text-[color:var(--violet)]" /> : <Copy className="h-3.5 w-3.5" />}
+        </button>
+      </div>
+      {prompt.description && (
+        <p className="mt-2 text-sm text-muted-foreground">{prompt.description}</p>
+      )}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="mt-3 inline-flex items-center gap-1 text-xs text-[color:var(--violet)] hover:underline"
+      >
+        {open ? "Hide prompt" : "Show prompt"}
+        <ChevronDown className={["h-3 w-3 transition-transform", open ? "rotate-180" : ""].join(" ")} />
+      </button>
+      {open && (
+        <pre className="mt-3 max-h-80 overflow-auto rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs leading-relaxed text-foreground/90 whitespace-pre-wrap">
+{prompt.body}
+        </pre>
+      )}
+      {prompt.tags?.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {prompt.tags.map((t: string) => (
+            <span key={t} className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground">#{t}</span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
