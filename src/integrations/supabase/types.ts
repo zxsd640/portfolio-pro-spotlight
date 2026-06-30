@@ -216,6 +216,45 @@ export type Database = {
         }
         Relationships: []
       }
+      prompts: {
+        Row: {
+          body: string
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          sort_order: number
+          tags: string[]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          tags?: string[]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           category: string | null
