@@ -13,15 +13,15 @@ export const Route = createFileRoute("/$username")({
       .eq("username", username)
       .maybeSingle();
     if (!profile) throw notFound();
-    const [{ data: projects }, { data: skills }, { data: experience }, { data: achievements }, { data: socials }, { data: likes }] = await Promise.all([
+    const [{ data: projects }, { data: experience }, { data: achievements }, { data: socials }, { data: prompts }, { data: likes }] = await Promise.all([
       supabase.from("projects").select("*").eq("user_id", profile.id).order("sort_order"),
-      supabase.from("skills").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("experience").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("achievements").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.from("social_links").select("*").eq("user_id", profile.id).order("sort_order"),
+      supabase.from("prompts").select("*").eq("user_id", profile.id).order("sort_order"),
       supabase.rpc("get_portfolio_likes_count", { _profile_id: profile.id }),
     ]);
-    return { profile, projects: projects ?? [], skills: skills ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], likes: (likes as number) ?? 0 };
+    return { profile, projects: projects ?? [], experience: experience ?? [], achievements: achievements ?? [], socials: socials ?? [], prompts: prompts ?? [], likes: (likes as number) ?? 0 };
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -57,10 +57,10 @@ function PublicPortfolio() {
   const data = Route.useLoaderData() as any;
   const profile: any = data.profile;
   const projects: any[] = data.projects;
-  const skills: any[] = data.skills;
   const experience: any[] = data.experience;
   const achievements: any[] = data.achievements;
   const socials: any[] = data.socials;
+  const prompts: any[] = data.prompts ?? [];
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(data.likes as number);
   const [copied, setCopied] = useState(false);
@@ -183,19 +183,11 @@ function PublicPortfolio() {
           )}
         </header>
 
-        {skills.length > 0 && (
-          <Section title="Skills">
+        {prompts.length > 0 && (
+          <Section title="Prompt Library">
             <div className="grid gap-3 sm:grid-cols-2">
-              {skills.map((s) => (
-                <div key={s.id} className="rounded-xl bg-white/5 p-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>{s.name}</span>
-                    <span className="text-xs text-muted-foreground">{s.level}%</span>
-                  </div>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/5">
-                    <div className="h-full brand-gradient" style={{ width: `${s.level}%` }} />
-                  </div>
-                </div>
+              {prompts.map((p) => (
+                <PromptCard key={p.id} prompt={p} />
               ))}
             </div>
           </Section>

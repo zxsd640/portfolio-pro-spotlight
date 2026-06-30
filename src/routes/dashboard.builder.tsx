@@ -34,7 +34,7 @@ const empty: Form = {
   projects: [], skills: [], experience: [], achievements: [], socials: [],
 };
 
-const STEPS = ["Basics", "Skills", "Projects", "Experience", "Achievements", "Socials", "Review"] as const;
+const STEPS = ["Basics", "Projects", "Experience", "Achievements", "Socials", "Review"] as const;
 
 function BuilderPage() {
   const { user } = useAuth();
@@ -175,12 +175,11 @@ function BuilderPage() {
 
       <div className="mt-6 glass-panel rounded-2xl p-6">
         {step === 0 && <BasicsStep form={form} update={update} />}
-        {step === 1 && <SkillsStep form={form} update={update} />}
-        {step === 2 && <ProjectsStep form={form} update={update} />}
-        {step === 3 && <ExperienceStep form={form} update={update} />}
-        {step === 4 && <AchievementsStep form={form} update={update} />}
-        {step === 5 && <SocialsStep form={form} update={update} />}
-        {step === 6 && <ReviewStep form={form} onPolish={polish} polishing={polishing} />}
+        {step === 1 && <ProjectsStep form={form} update={update} />}
+        {step === 2 && <ExperienceStep form={form} update={update} />}
+        {step === 3 && <AchievementsStep form={form} update={update} />}
+        {step === 4 && <SocialsStep form={form} update={update} />}
+        {step === 5 && <ReviewStep form={form} onPolish={polish} polishing={polishing} />}
 
         {error && (
           <div className="mt-4 flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs text-red-300">
@@ -415,22 +414,6 @@ function BasicsStep({ form, update }: any) {
     </div>
   );
 }
-function SkillsStep({ form, update }: any) {
-  return (
-    <ListEditor
-      items={form.skills}
-      onChange={(v) => update("skills", v)}
-      empty={{ name: "", level: 80 }}
-      addLabel="Add skill"
-      render={(item, set) => (
-        <div className="grid gap-2 sm:grid-cols-[1fr_140px]">
-          <Input label="Skill" value={item.name} onChange={(e) => set({ ...item, name: e.target.value })} placeholder="React" />
-          <Input label="Level (0-100)" type="number" min={0} max={100} value={item.level} onChange={(e) => set({ ...item, level: Number(e.target.value) })} />
-        </div>
-      )}
-    />
-  );
-}
 function ProjectsStep({ form, update }: any) {
   return (
     <ListEditor
@@ -529,7 +512,7 @@ function ReviewStep({ form, onPolish, polishing }: any) {
         <Stat k="Title" v={form.title || "—"} />
         <Stat k="Location" v={form.location || "—"} />
         <Stat k="Projects" v={String(form.projects.length)} />
-        <Stat k="Skills" v={String(form.skills.length)} />
+        
         <Stat k="Experience" v={String(form.experience.length)} />
         <Stat k="Achievements" v={String(form.achievements.length)} />
       </dl>
