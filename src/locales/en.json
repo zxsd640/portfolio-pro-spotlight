@@ -1,6 +1,8 @@
 {
   "common": {
     "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved",
     "cancel": "Cancel",
     "back": "Back",
     "next": "Next",
@@ -11,7 +13,14 @@
     "edit": "Edit",
     "search": "Search",
     "close": "Close",
-    "language": "Language"
+    "open": "Open",
+    "language": "Language",
+    "copy": "Copy",
+    "copied": "Copied",
+    "share": "Share",
+    "preview": "Preview",
+    "on": "On",
+    "off": "Off"
   },
   "nav": {
     "templates": "Templates",
@@ -32,6 +41,98 @@
     "startFree": "Start free",
     "viewDemo": "View demo",
     "smallPrint": "Free forever · No credit card required · No subscriptions"
+  },
+  "trusted": {
+    "kicker": "Built for freelancers, designers & developers worldwide",
+    "line": "Portfolio Pro is a brand-new platform — join our growing community of creators shaping it from day one."
+  },
+  "product": {
+    "eyebrow": "See it in action",
+    "title": "A real product, not a mockup.",
+    "sub": "Take a peek inside the dashboard and the drag-and-drop builder.",
+    "dashboard": "Dashboard",
+    "builder": "Drag & Drop Builder",
+    "openLive": "Open the live demo",
+    "stats": { "views": "Total views", "projects": "Projects", "likes": "Likes" },
+    "views14": "Views, last 14 days",
+    "sections": "Sections"
+  },
+  "compare": {
+    "eyebrow": "Why Portfolio Pro",
+    "title": "Different from Behance, Wix and Squarespace.",
+    "sub": "They're great at what they do. We're laser-focused on one thing: getting your work in front of the right people.",
+    "feature": "Feature",
+    "us": "Portfolio Pro",
+    "others": "Behance / Wix / Squarespace",
+    "row1": "Truly free, no paywalled features",
+    "row2": "Built for personal portfolios",
+    "row3": "AI writing assistant included",
+    "row4": "Custom domain at no cost",
+    "row5": "Own your content, export anytime",
+    "others1": "Limited trial / paid tiers",
+    "others2": "General website / network",
+    "others3": "Add-on or unavailable",
+    "others4": "Paid plan required",
+    "others5": "Lock-in common"
+  },
+  "features": {
+    "eyebrow": "Features",
+    "title": "Everything you need to look professional.",
+    "sub": "Designed end-to-end so your work looks as good as it really is.",
+    "dnd": { "t": "Drag & drop builder", "d": "Compose sections like Lego blocks. Reorder, restyle, and ship in minutes." },
+    "tpl": { "t": "Premium templates", "d": "Dozens of award-winning templates crafted by senior designers." },
+    "dom": { "t": "Your own domain", "d": "Use portfoliopro.com/you or connect a custom domain in one click." },
+    "an":  { "t": "Real-time analytics", "d": "Track views, sources, and engagement on every project you publish." },
+    "ai":  { "t": "AI writing assist", "d": "Write better case studies with an assistant trained on great portfolios." },
+    "seo": { "t": "Built-in SEO", "d": "Auto-generated meta, OG cards and sitemaps so clients find you on Google." }
+  },
+  "templates": {
+    "eyebrow": "Templates",
+    "title": "Start from a",
+    "titleAccent": "masterpiece.",
+    "sub": "Award-winning templates designed by senior designers — completely free.",
+    "browseAll": "Browse all templates",
+    "preview": "Preview"
+  },
+  "showcase": {
+    "eyebrow": "Showcase",
+    "title": "Loved by creators.",
+    "sub": "Real portfolios built with Portfolio Pro."
+  },
+  "reviews": {
+    "eyebrow": "Reviews",
+    "title": "What the community is saying.",
+    "sub": "Real reviews from real creators.",
+    "empty": "Be the first to review",
+    "emptySub": "Share your experience with Portfolio Pro — help others discover it.",
+    "write": "Write a review",
+    "name": "Your name",
+    "role": "Your role (e.g. Designer)",
+    "message": "Your review",
+    "submit": "Submit review",
+    "thanks": "Thanks for your review!"
+  },
+  "whyfree": {
+    "eyebrow": "Why it's free",
+    "title": "Built for creators, not for shareholders.",
+    "sub": "Portfolio Pro is a passion project. Here's how we keep it free — sustainably.",
+    "b1": { "t": "Free forever core", "d": "The builder, templates, hosting, and analytics stay free — no paywalled essentials." },
+    "b2": { "t": "Sustained by future Pro", "d": "Down the road, optional Pro features (custom domain, team seats, advanced analytics) will fund the free core." },
+    "b3": { "t": "No dark patterns", "d": "No hidden upsells, no forced watermarks, no lock-in. You always own and can export your content." }
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Answers before you ask.",
+    "q1": "Is it really free?", "a1": "Yes. Every feature, every template, forever.",
+    "q2": "Do I need a credit card?", "a2": "No. Sign up with an email and start building.",
+    "q3": "Can I use my own domain?", "a3": "Yes — connect a custom domain in one click.",
+    "q4": "Who is behind Portfolio Pro?", "a4": "Portfolio Pro is designed and developed by Zyad Abdou."
+  },
+  "cta": {
+    "title": "Your portfolio, in minutes.",
+    "sub": "Join thousands of creators. Ship a portfolio you're proud of, today.",
+    "primary": "Get started — it's free",
+    "secondary": "See the demo"
   },
   "footer": {
     "tagline": "Build your professional presence. Impress every client. Completely free.",
@@ -63,6 +164,51 @@
     "verifySent": "We sent a verification link to {{email}}. Click it to activate your account.",
     "backToSignIn": "Back to sign in"
   },
+  "about": {
+    "eyebrow": "About",
+    "titleA": "Built for creators.",
+    "titleB": "Free, always.",
+    "p1": "Portfolio Pro is the portfolio platform we always wished existed — beautiful by default, ridiculously fast, and completely free. No subscriptions, no upsells, no dark patterns.",
+    "p2": "Whether you're a developer, designer, photographer, video editor, AI creator or freelancer — you deserve a portfolio that looks like it cost ten thousand dollars to build. Now it costs nothing.",
+    "b1": { "t": "Free forever", "d": "Every feature, every template." },
+    "b2": { "t": "Premium craft", "d": "Designed pixel by pixel." },
+    "b3": { "t": "Lightning fast", "d": "Built on modern tech." },
+    "credit": "Crafted with care for the creative community.",
+    "cta": "Start building — free"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "titleA": "Let's",
+    "titleB": "talk.",
+    "sub": "Questions, feedback or partnerships — we read every message.",
+    "email": "Email",
+    "response": "Response",
+    "responseTime": "Within 24 hours",
+    "name": "Your name",
+    "emailPh": "Email",
+    "subject": "Subject",
+    "message": "Tell us more",
+    "send": "Send message",
+    "sent": "Message sent",
+    "sentSub": "Thanks — we'll get back to you shortly."
+  },
+  "tpage": {
+    "eyebrow": "Templates",
+    "titleA": "Start from a",
+    "titleB": "masterpiece.",
+    "sub": "Award-winning templates designed by senior designers — completely free.",
+    "preview": "Preview"
+  },
+  "demo": {
+    "exit": "Exit demo",
+    "label": "Live demo portfolio",
+    "buildYours": "Build yours",
+    "hire": "Hire me",
+    "resume": "View resume",
+    "selected": "Selected work",
+    "skills": "Skills",
+    "experience": "Experience"
+  },
   "dashboard": {
     "overview": "Overview",
     "builder": "Builder",
@@ -72,6 +218,48 @@
     "settings": "Settings",
     "signOut": "Sign out",
     "viewPortfolio": "View portfolio",
-    "openBuilder": "Open builder"
+    "openBuilder": "Open builder",
+    "welcome": "Welcome",
+    "growTitleA": "Let's grow your",
+    "growTitleB": "presence.",
+    "growSub": "Your live numbers, updated in real time.",
+    "statProjects": "Projects",
+    "statViews": "Portfolio views",
+    "statLikes": "Likes",
+    "publicTitle": "Your public portfolio",
+    "share": "Share",
+    "copied": "Copied",
+    "open": "Open",
+    "draftNote": "Portfolio is in draft. Publish it in Settings to make it public.",
+    "buildAI": "Build with AI",
+    "buildAIDesc": "Answer a few questions and let AI write a polished portfolio for you in seconds.",
+    "start": "Start",
+    "manage": "Manage projects",
+    "manageDesc": "Add, edit, and reorder the work you want to showcase.",
+    "openAction": "Open"
+  },
+  "settings": {
+    "eyebrow": "Settings",
+    "title": "Preferences",
+    "profile": "Profile",
+    "name": "Name",
+    "username": "Username (your URL)",
+    "titleField": "Title",
+    "location": "Location",
+    "bio": "Bio",
+    "visibility": "Visibility",
+    "published": "Published — public on the web",
+    "draft": "Draft — only you can see it",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "sound": "Sound",
+    "soundFx": "Sound effects:",
+    "saveChanges": "Save changes",
+    "saving": "Saving…",
+    "savedShort": "Saved",
+    "account": "Account",
+    "signOut": "Sign out",
+    "saveFailed": "Failed to save"
   }
 }
