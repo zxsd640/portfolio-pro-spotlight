@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Github, Globe, MapPin, Mail, Calendar, ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useContactModal } from "@/lib/contact-modal";
 import { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ const skills = [
 ];
 
 function DemoPage() {
+  const { t } = useTranslation();
   const { open } = useContactModal();
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
@@ -42,11 +44,11 @@ function DemoPage() {
       <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
         <div className="flex w-full max-w-5xl items-center justify-between rounded-2xl glass-panel px-4 py-2.5">
           <Link to="/" data-sound className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Exit demo
+            <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {t("demo.exit")}
           </Link>
-          <span className="text-xs text-muted-foreground">Live demo portfolio</span>
+          <span className="text-xs text-muted-foreground">{t("demo.label")}</span>
           <Link to="/auth" search={{ mode: "register" }} data-sound className="rounded-xl brand-gradient px-3 py-1.5 text-xs font-medium text-white">
-            Build yours
+            {t("demo.buildYours")}
           </Link>
         </div>
       </header>
@@ -63,10 +65,10 @@ function DemoPage() {
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button onClick={() => open("Sara")} data-sound data-sound-hover className="inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white hover:scale-[1.03] transition-transform cursor-pointer">
-              <Mail className="h-4 w-4" /> Hire me
+              <Mail className="h-4 w-4" /> {t("demo.hire")}
             </button>
             <span data-sound-hover className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium">
-              <Github className="h-4 w-4" /> View resume
+              <Github className="h-4 w-4" /> {t("demo.resume")}
             </span>
           </div>
         </div>
@@ -74,15 +76,10 @@ function DemoPage() {
 
       <section className="relative px-4 py-16">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-2xl font-semibold tracking-tight">Selected work</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">{t("demo.selected")}</h2>
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((p, i) => (
-              <div
-                key={p.name}
-                data-sound-hover
-                className="group relative overflow-hidden rounded-2xl glass-panel transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)] animate-fade-up"
-                style={{ animationDelay: `${i * 80}ms` }}
-              >
+              <div key={p.name} data-sound-hover className="group relative overflow-hidden rounded-2xl glass-panel transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)] animate-fade-up" style={{ animationDelay: `${i * 80}ms` }}>
                 <div className="aspect-[4/5] overflow-hidden">
                   <div className="h-full w-full transition-transform duration-700 group-hover:scale-110" style={{ background: p.grad }} />
                 </div>
@@ -102,7 +99,7 @@ function DemoPage() {
       <section className="relative px-4 py-16">
         <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
           <div className="glass-panel rounded-2xl p-8">
-            <h3 className="text-xl font-semibold tracking-tight">Skills</h3>
+            <h3 className="text-xl font-semibold tracking-tight">{t("demo.skills")}</h3>
             <div className="mt-6 space-y-4">
               {skills.map((s) => (
                 <div key={s.name}>
@@ -111,25 +108,22 @@ function DemoPage() {
                     <span className="text-muted-foreground">{s.level}%</span>
                   </div>
                   <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5">
-                    <div
-                      className="h-full brand-gradient transition-all duration-1000 ease-out"
-                      style={{ width: mounted ? `${s.level}%` : "0%" }}
-                    />
+                    <div className="h-full brand-gradient transition-all duration-1000 ease-out" style={{ width: mounted ? `${s.level}%` : "0%" }} />
                   </div>
                 </div>
               ))}
             </div>
           </div>
           <div className="glass-panel rounded-2xl p-8">
-            <h3 className="text-xl font-semibold tracking-tight">Experience</h3>
-            <ol className="mt-6 relative space-y-6 border-l border-white/10 pl-6">
+            <h3 className="text-xl font-semibold tracking-tight">{t("demo.experience")}</h3>
+            <ol className="mt-6 relative space-y-6 border-s border-white/10 ps-6">
               {[
                 { year: "2022 – Now", title: "Senior Designer · Stripe" },
                 { year: "2019 – 2022", title: "Product Designer · Linear" },
                 { year: "2017 – 2019", title: "Designer · Figma" },
               ].map((e) => (
                 <li key={e.title} className="relative">
-                  <span className="absolute -left-[27px] top-1.5 h-3 w-3 rounded-full brand-gradient shadow-[0_0_20px_oklch(0.55_0.25_295/0.7)]" />
+                  <span className="absolute -start-[27px] top-1.5 h-3 w-3 rounded-full brand-gradient shadow-[0_0_20px_oklch(0.55_0.25_295/0.7)]" />
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">{e.year}</p>
                   <p className="mt-1 text-sm font-medium">{e.title}</p>
                 </li>

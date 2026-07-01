@@ -18,6 +18,17 @@ export const LANGUAGES = [
 
 export const STORAGE_KEY = "pp.lang";
 
+function detectInitialLanguage(): string {
+  if (typeof window === "undefined") return "en";
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored && LANGUAGES.some((l) => l.code === stored)) return stored;
+  } catch {}
+  const nav = (navigator.language || "en").toLowerCase().split("-")[0];
+  if (LANGUAGES.some((l) => l.code === nav)) return nav;
+  return "en";
+}
+
 if (!i18n.isInitialized) {
   i18n
     .use(initReactI18next)
@@ -30,7 +41,7 @@ if (!i18n.isInitialized) {
         de: { translation: de },
         pt: { translation: pt },
       },
-      lng: "en",
+      lng: detectInitialLanguage(),
       fallbackLng: "en",
       interpolation: { escapeValue: false },
       react: { useSuspense: false },
@@ -47,6 +58,12 @@ export function applyLanguage(code: string) {
   if (typeof localStorage !== "undefined") {
     try { localStorage.setItem(STORAGE_KEY, lang.code); } catch {}
   }
+}
+
+// Apply once on module load (client only)
+if (typeof document !== "undefined") {
+  const initial = detectInitialLanguage();
+  applyLanguage(initial);
 }
 
 export default i18n;

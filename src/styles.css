@@ -237,5 +237,19 @@
 }
 
 /* RTL adjustments */
-[dir="rtl"] body { font-family: "Tajawal", "Cairo", "Inter", system-ui, sans-serif; }
-[dir="rtl"] .text-gradient { background-image: linear-gradient(270deg, oklch(0.78 0.18 295), oklch(0.85 0.14 220)); }
+[dir="rtl"] body {
+  font-family: "Cairo", "Tajawal", "Inter", system-ui, sans-serif;
+  line-height: 1.75;
+  letter-spacing: 0;
+}
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4 {
+  font-family: "Cairo", "Tajawal", "Inter", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+[dir="rtl"] .text-gradient {
+  background-image: linear-gradient(270deg, oklch(0.99 0.005 250) 0%, oklch(0.78 0.12 280) 100%);
+}
+[dir="rtl"] input, [dir="rtl"] textarea { text-align: right; }
+[dir="rtl"] .tracking-tight { letter-spacing: 0; }
+[dir="rtl"] .tracking-wide, [dir="rtl"] .tracking-wider, [dir="rtl"] .tracking-widest { letter-spacing: 0; }
+
