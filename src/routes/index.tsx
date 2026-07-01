@@ -33,17 +33,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Portfolio Pro — Create a Portfolio That Gets You Hired" },
-      {
-        name: "description",
-        content:
-          "Build a stunning personal portfolio in minutes. Completely free for developers, designers, photographers, video editors and creative freelancers.",
-      },
+      { name: "description", content: "Build a stunning personal portfolio in minutes. Completely free for developers, designers, photographers, video editors and creative freelancers." },
       { property: "og:title", content: "Portfolio Pro — Create a Portfolio That Gets You Hired" },
-      {
-        property: "og:description",
-        content:
-          "Build a stunning personal portfolio in minutes. Completely free, no subscriptions, no hidden costs.",
-      },
+      { property: "og:description", content: "Build a stunning personal portfolio in minutes. Completely free, no subscriptions, no hidden costs." },
     ],
   }),
   component: LandingPage,
@@ -70,7 +62,6 @@ function LandingPage() {
   );
 }
 
-/* ---------------- Ambient background ---------------- */
 function BackdropGlow() {
   return (
     <>
@@ -81,77 +72,47 @@ function BackdropGlow() {
   );
 }
 
-/* ---------------- Hero ---------------- */
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const { t: tHero } = useTranslation();
+  const { t } = useTranslation();
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setParallax({ x, y });
+      setParallax({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className="relative flex min-h-[100svh] items-center justify-center px-4 pb-24 pt-36"
-    >
+    <section ref={ref} className="relative flex min-h-[100svh] items-center justify-center px-4 pb-24 pt-36">
       <FloatingCards parallax={parallax} />
-
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <div className="animate-fade-up mx-auto mb-6 inline-flex items-center gap-2 rounded-full glass-panel px-3 py-1.5 text-xs text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-[color:var(--violet)]" />
-          {tHero("hero.badge")}
+          {t("hero.badge")}
         </div>
-
-        <h1
-          className="animate-fade-up text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
-          style={{ animationDelay: "80ms" }}
-        >
-          {tHero("hero.titleA")} <span className="text-gradient">{tHero("hero.titleB")}</span>
+        <h1 className="animate-fade-up text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
+          {t("hero.titleA")} <span className="text-gradient">{t("hero.titleB")}</span>
         </h1>
-
-        <p
-          className="animate-fade-up mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
-          style={{ animationDelay: "160ms" }}
-        >
-          {tHero("hero.subtitle")}
+        <p className="animate-fade-up mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg" style={{ animationDelay: "160ms" }}>
+          {t("hero.subtitle")}
         </p>
-
-        <div
-          className="animate-fade-up mt-9 flex flex-wrap items-center justify-center gap-3"
-          style={{ animationDelay: "240ms" }}
-        >
-          <Link
-            to="/auth"
-            search={{ mode: "register" }}
-            data-sound
-            data-sound-hover
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.6)] transition-transform hover:scale-[1.03]"
-          >
-            {tHero("hero.startFree")}
+        <div className="animate-fade-up mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "240ms" }}>
+          <Link to="/auth" search={{ mode: "register" }} data-sound data-sound-hover className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.6)] transition-transform hover:scale-[1.03]">
+            {t("hero.startFree")}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
           </Link>
-          <Link
-            to="/demo"
-            data-sound
-            className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
-          >
-            {tHero("hero.viewDemo")}
+          <Link to="/demo" data-sound className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/10">
+            {t("hero.viewDemo")}
           </Link>
         </div>
-
-        <p
-          className="animate-fade-up mt-6 text-xs text-muted-foreground"
-          style={{ animationDelay: "320ms" }}
-        >
-          {tHero("hero.smallPrint")}
+        <p className="animate-fade-up mt-6 text-xs text-muted-foreground" style={{ animationDelay: "320ms" }}>
+          {t("hero.smallPrint")}
         </p>
       </div>
     </section>
@@ -161,28 +122,16 @@ function Hero() {
 function FloatingCards({ parallax }: { parallax: { x: number; y: number } }) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="animate-float-slow absolute left-[6%] top-[28%] w-56 -rotate-6 hidden sm:block"
-        style={{ transform: `translate(${parallax.x * -1}px, ${parallax.y * -1}px) rotate(-6deg)` }}
-      >
+      <div className="animate-float-slow absolute left-[6%] top-[28%] w-56 -rotate-6 hidden sm:block" style={{ transform: `translate(${parallax.x * -1}px, ${parallax.y * -1}px) rotate(-6deg)` }}>
         <MiniCard title="UI/UX Design" subtitle="Banking app · 2024" accent="var(--electric)" />
       </div>
-      <div
-        className="animate-float-medium absolute right-[7%] top-[22%] w-60 rotate-[8deg] hidden sm:block"
-        style={{ transform: `translate(${parallax.x}px, ${parallax.y}px) rotate(8deg)` }}
-      >
+      <div className="animate-float-medium absolute right-[7%] top-[22%] w-60 rotate-[8deg] hidden sm:block" style={{ transform: `translate(${parallax.x}px, ${parallax.y}px) rotate(8deg)` }}>
         <MiniCard title="Brand Identity" subtitle="Nova Studio · 2024" accent="var(--violet)" />
       </div>
-      <div
-        className="animate-float-slow absolute bottom-[14%] left-[14%] w-52 rotate-[5deg] hidden md:block"
-        style={{ transform: `translate(${parallax.x * 0.6}px, ${parallax.y * 0.6}px) rotate(5deg)`, animationDelay: "1.2s" }}
-      >
+      <div className="animate-float-slow absolute bottom-[14%] left-[14%] w-52 rotate-[5deg] hidden md:block" style={{ transform: `translate(${parallax.x * 0.6}px, ${parallax.y * 0.6}px) rotate(5deg)`, animationDelay: "1.2s" }}>
         <MiniCard title="Photography" subtitle="Editorial · Lagos" accent="var(--cyan)" />
       </div>
-      <div
-        className="animate-float-medium absolute bottom-[16%] right-[12%] w-52 -rotate-[7deg] hidden md:block"
-        style={{ transform: `translate(${parallax.x * -0.7}px, ${parallax.y * -0.7}px) rotate(-7deg)`, animationDelay: "0.8s" }}
-      >
+      <div className="animate-float-medium absolute bottom-[16%] right-[12%] w-52 -rotate-[7deg] hidden md:block" style={{ transform: `translate(${parallax.x * -0.7}px, ${parallax.y * -0.7}px) rotate(-7deg)`, animationDelay: "0.8s" }}>
         <MiniCard title="Web Development" subtitle="React · TypeScript" accent="var(--royal)" />
       </div>
     </div>
@@ -192,10 +141,7 @@ function FloatingCards({ parallax }: { parallax: { x: number; y: number } }) {
 function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string; accent: string }) {
   return (
     <div className="glass-panel overflow-hidden rounded-2xl">
-      <div
-        className="h-24 w-full"
-        style={{ background: `linear-gradient(135deg, ${accent}, color-mix(in oklab, ${accent} 30%, transparent))` }}
-      />
+      <div className="h-24 w-full" style={{ background: `linear-gradient(135deg, ${accent}, color-mix(in oklab, ${accent} 30%, transparent))` }} />
       <div className="p-3">
         <p className="text-[13px] font-semibold leading-tight">{title}</p>
         <p className="text-[11px] text-muted-foreground">{subtitle}</p>
@@ -204,46 +150,29 @@ function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string
   );
 }
 
-/* ---------------- Trusted by ---------------- */
 function TrustedBy() {
+  const { t } = useTranslation();
   return (
     <section className="relative py-14">
       <div className="mx-auto max-w-3xl px-4 text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          Built for freelancers, designers & developers worldwide
-        </p>
-        <p className="mt-3 text-sm text-foreground/70">
-          Portfolio Pro is a brand-new platform — join our growing community of creators
-          shaping it from day one.
-        </p>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t("trusted.kicker")}</p>
+        <p className="mt-3 text-sm text-foreground/70">{t("trusted.line")}</p>
       </div>
     </section>
   );
 }
 
-/* ---------------- Product Preview ---------------- */
 function ProductPreview() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<"dashboard" | "builder">("dashboard");
   return (
     <section className="relative px-4 py-20">
-      <SectionHeader
-        eyebrow="See it in action"
-        title="A real product, not a mockup."
-        sub="Take a peek inside the dashboard and the drag-and-drop builder."
-      />
+      <SectionHeader eyebrow={t("product.eyebrow")} title={t("product.title")} sub={t("product.sub")} />
       <div className="mx-auto mt-10 max-w-5xl">
         <div className="mb-5 flex justify-center gap-2">
           {(["dashboard", "builder"] as const).map((k) => (
-            <button
-              key={k}
-              data-sound
-              onClick={() => setTab(k)}
-              className={[
-                "rounded-xl px-4 py-2 text-sm font-medium transition-all cursor-pointer",
-                tab === k ? "brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]" : "glass-panel text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {k === "dashboard" ? "Dashboard" : "Drag & Drop Builder"}
+            <button key={k} data-sound onClick={() => setTab(k)} className={["rounded-xl px-4 py-2 text-sm font-medium transition-all cursor-pointer", tab === k ? "brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]" : "glass-panel text-muted-foreground hover:text-foreground"].join(" ")}>
+              {k === "dashboard" ? t("product.dashboard") : t("product.builder")}
             </button>
           ))}
         </div>
@@ -252,19 +181,13 @@ function ProductPreview() {
             <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
-            <span className="ms-3 text-[11px] text-muted-foreground">
-              portfoliopro.app/{tab === "dashboard" ? "dashboard" : "builder"}
-            </span>
+            <span className="ms-3 text-[11px] text-muted-foreground">portfoliopro.app/{tab === "dashboard" ? "dashboard" : "builder"}</span>
           </div>
           {tab === "dashboard" ? <PreviewDashboard /> : <PreviewBuilder />}
         </div>
         <div className="mt-6 flex justify-center">
-          <Link
-            to="/demo"
-            data-sound
-            className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10"
-          >
-            Open the live demo
+          <Link to="/demo" data-sound className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10">
+            {t("product.openLive")}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />
           </Link>
         </div>
@@ -274,10 +197,11 @@ function ProductPreview() {
 }
 
 function PreviewDashboard() {
+  const { t } = useTranslation();
   const stats = [
-    { label: "Total views", value: "12,438", icon: BarChart3 },
-    { label: "Projects", value: "8", icon: Layers },
-    { label: "Likes", value: "342", icon: Heart },
+    { label: t("product.stats.views"), value: "12,438", icon: BarChart3 },
+    { label: t("product.stats.projects"), value: "8", icon: Layers },
+    { label: t("product.stats.likes"), value: "342", icon: Heart },
   ];
   return (
     <div className="rounded-2xl bg-black/30 p-5">
@@ -291,14 +215,10 @@ function PreviewDashboard() {
         ))}
       </div>
       <div className="mt-4 glass-panel rounded-xl p-4">
-        <p className="text-xs text-muted-foreground">Views, last 14 days</p>
+        <p className="text-xs text-muted-foreground">{t("product.views14")}</p>
         <div className="mt-3 flex h-24 items-end gap-1.5">
           {[30, 45, 28, 60, 75, 50, 82, 95, 70, 88, 100, 78, 92, 110].map((h, i) => (
-            <div
-              key={i}
-              className="flex-1 rounded-t-md brand-gradient opacity-80"
-              style={{ height: `${h}%` }}
-            />
+            <div key={i} className="flex-1 rounded-t-md brand-gradient opacity-80" style={{ height: `${h}%` }} />
           ))}
         </div>
       </div>
@@ -307,20 +227,15 @@ function PreviewDashboard() {
 }
 
 function PreviewBuilder() {
+  const { t } = useTranslation();
   const blocks = ["Hero", "About", "Projects", "Experience", "Skills", "Contact"];
   return (
     <div className="grid grid-cols-12 gap-3 rounded-2xl bg-black/30 p-5">
       <div className="col-span-4 glass-panel rounded-xl p-3">
-        <p className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Sections</p>
+        <p className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">{t("product.sections")}</p>
         <ul className="space-y-1.5">
           {blocks.map((b, i) => (
-            <li
-              key={b}
-              className={[
-                "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs",
-                i === 1 ? "bg-white/10 text-foreground" : "text-muted-foreground hover:bg-white/5",
-              ].join(" ")}
-            >
+            <li key={b} className={["flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs", i === 1 ? "bg-white/10 text-foreground" : "text-muted-foreground hover:bg-white/5"].join(" ")}>
               <span className="h-1 w-1 rounded-full bg-[color:var(--violet)]" />
               {b}
               <span className="ms-auto text-[10px] text-muted-foreground/60">⋮⋮</span>
@@ -333,36 +248,30 @@ function PreviewBuilder() {
         <div className="mt-3 h-3 w-2/3 rounded-full bg-white/10" />
         <div className="mt-2 h-3 w-1/2 rounded-full bg-white/10" />
         <div className="mt-4 grid grid-cols-3 gap-2">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-[4/3] rounded-lg bg-white/5" />
-          ))}
+          {[1, 2, 3].map((i) => (<div key={i} className="aspect-[4/3] rounded-lg bg-white/5" />))}
         </div>
       </div>
     </div>
   );
 }
 
-/* ---------------- Comparison ---------------- */
 function Comparison() {
+  const { t } = useTranslation();
   const rows = [
-    { feature: "Truly free, no paywalled features", pp: true, others: "Limited trial / paid tiers" },
-    { feature: "Built for personal portfolios", pp: true, others: "General website / network" },
-    { feature: "AI writing assistant included", pp: true, others: "Add-on or unavailable" },
-    { feature: "Custom domain at no cost", pp: true, others: "Paid plan required" },
-    { feature: "Own your content, export anytime", pp: true, others: "Lock-in common" },
+    { feature: t("compare.row1"), pp: true, others: t("compare.others1") },
+    { feature: t("compare.row2"), pp: true, others: t("compare.others2") },
+    { feature: t("compare.row3"), pp: true, others: t("compare.others3") },
+    { feature: t("compare.row4"), pp: true, others: t("compare.others4") },
+    { feature: t("compare.row5"), pp: true, others: t("compare.others5") },
   ];
   return (
     <section className="relative px-4 py-24">
-      <SectionHeader
-        eyebrow="Why Portfolio Pro"
-        title="Different from Behance, Wix and Squarespace."
-        sub="They're great at what they do. We're laser-focused on one thing: getting your work in front of the right people."
-      />
+      <SectionHeader eyebrow={t("compare.eyebrow")} title={t("compare.title")} sub={t("compare.sub")} />
       <div className="mx-auto mt-12 max-w-4xl glass-panel overflow-hidden rounded-2xl">
         <div className="grid grid-cols-12 border-b border-white/10 bg-white/5 px-5 py-3 text-xs uppercase tracking-wider text-muted-foreground">
-          <div className="col-span-6">Feature</div>
-          <div className="col-span-3 text-center">Portfolio Pro</div>
-          <div className="col-span-3 text-center">Behance / Wix / Squarespace</div>
+          <div className="col-span-6">{t("compare.feature")}</div>
+          <div className="col-span-3 text-center">{t("compare.us")}</div>
+          <div className="col-span-3 text-center">{t("compare.others")}</div>
         </div>
         {rows.map((r) => (
           <div key={r.feature} className="grid grid-cols-12 items-center border-b border-white/5 px-5 py-4 text-sm last:border-b-0">
@@ -372,9 +281,7 @@ function Comparison() {
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full brand-gradient text-white">
                   <Star className="h-3.5 w-3.5 fill-current" />
                 </span>
-              ) : (
-                <Minus className="h-4 w-4 text-muted-foreground" />
-              )}
+              ) : (<Minus className="h-4 w-4 text-muted-foreground" />)}
             </div>
             <div className="col-span-3 text-center text-xs text-muted-foreground">{r.others}</div>
           </div>
@@ -384,26 +291,22 @@ function Comparison() {
   );
 }
 
-/* ---------------- Features ---------------- */
 function Features() {
+  const { t } = useTranslation();
   const items = [
-    { icon: Layers, title: "Drag & drop builder", desc: "Compose sections like Lego blocks. Reorder, restyle, and ship in minutes." },
-    { icon: Palette, title: "Premium templates", desc: "Dozens of award-winning templates crafted by senior designers." },
-    { icon: Globe, title: "Your own domain", desc: "Use portfoliopro.com/you or connect a custom domain in one click." },
-    { icon: BarChart3, title: "Real-time analytics", desc: "Track views, sources, and engagement on every project you publish." },
-    { icon: Brain, title: "AI writing assist", desc: "Write better case studies with an assistant trained on great portfolios." },
-    { icon: Shield, title: "Built-in SEO", desc: "Auto-generated meta, OG cards and sitemaps so clients find you on Google." },
+    { icon: Layers, title: t("features.dnd.t"), desc: t("features.dnd.d") },
+    { icon: Palette, title: t("features.tpl.t"), desc: t("features.tpl.d") },
+    { icon: Globe, title: t("features.dom.t"), desc: t("features.dom.d") },
+    { icon: BarChart3, title: t("features.an.t"), desc: t("features.an.d") },
+    { icon: Brain, title: t("features.ai.t"), desc: t("features.ai.d") },
+    { icon: Shield, title: t("features.seo.t"), desc: t("features.seo.d") },
   ];
   return (
     <section id="features" className="relative px-4 py-28">
-      <SectionHeader eyebrow="Features" title="Everything you need to look professional." sub="Designed end-to-end so your work looks as good as it really is." />
+      <SectionHeader eyebrow={t("features.eyebrow")} title={t("features.title")} sub={t("features.sub")} />
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((it) => (
-          <div
-            key={it.title}
-            data-sound-hover
-            className="group relative overflow-hidden rounded-2xl glass-panel p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_oklch(0.55_0.25_295/0.5)]"
-          >
+          <div key={it.title} data-sound-hover className="group relative overflow-hidden rounded-2xl glass-panel p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_oklch(0.55_0.25_295/0.5)]">
             <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-xl brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]">
               <it.icon className="h-5 w-5" />
             </div>
@@ -417,8 +320,8 @@ function Features() {
   );
 }
 
-/* ---------------- Templates ---------------- */
 function Templates() {
+  const { t } = useTranslation();
   const tpls = [
     { name: "Aperture", role: "Photography", grad: "linear-gradient(135deg,#0ea5e9,#6366f1)" },
     { name: "Monolith", role: "Designer", grad: "linear-gradient(135deg,#a855f7,#ec4899)" },
@@ -429,28 +332,21 @@ function Templates() {
   ];
   return (
     <section id="templates" className="relative px-4 py-28">
-      <SectionHeader eyebrow="Templates" title="Start from a masterpiece." sub="Hand-crafted templates for every profession. Tweak anything." />
+      <SectionHeader eyebrow={t("templates.eyebrow")} title={`${t("templates.title")} ${t("templates.titleAccent")}`} sub={t("templates.sub")} />
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {tpls.map((t) => (
-          <Link
-            key={t.name}
-            to="/demo"
-            data-sound
-            data-sound-hover
-            className="group relative overflow-hidden rounded-3xl glass-panel transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)]"
-          >
-            <div className="relative aspect-[4/5] w-full overflow-hidden" style={{ background: t.grad }}>
+        {tpls.map((tpl) => (
+          <Link key={tpl.name} to="/demo" data-sound data-sound-hover className="group relative overflow-hidden rounded-3xl glass-panel transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)]">
+            <div className="relative aspect-[4/5] w-full overflow-hidden" style={{ background: tpl.grad }}>
               <div className="absolute inset-x-6 bottom-6 rounded-xl bg-black/30 p-3 backdrop-blur-md">
-                <p className="text-xs uppercase tracking-widest text-white/70">{t.role}</p>
-                <p className="mt-0.5 text-xl font-semibold text-white">{t.name}</p>
+                <p className="text-xs uppercase tracking-widest text-white/70">{tpl.role}</p>
+                <p className="mt-0.5 text-xl font-semibold text-white">{tpl.name}</p>
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-white/0 transition-colors group-hover:bg-white/5" />
             </div>
             <div className="flex items-center justify-between p-4">
-              <span className="text-sm font-medium">{t.name}</span>
+              <span className="text-sm font-medium">{tpl.name}</span>
               <span className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-xs text-foreground transition-colors group-hover:bg-white/20">
-                Preview <ArrowRight className="h-3 w-3" />
+                {t("templates.preview")} <ArrowRight className="h-3 w-3 rtl:rotate-180" />
               </span>
             </div>
           </Link>
@@ -460,8 +356,8 @@ function Templates() {
   );
 }
 
-/* ---------------- Showcase ---------------- */
 function Showcase() {
+  const { t } = useTranslation();
   const { open } = useContactModal();
   const creators = [
     { name: "Amr Hassan", role: "Product Designer", icon: Palette, grad: "linear-gradient(135deg,#7c3aed,#06b6d4)" },
@@ -473,26 +369,18 @@ function Showcase() {
   ];
   return (
     <section id="showcase" className="relative px-4 py-28">
-      <SectionHeader eyebrow="Showcase" title="Made by creators like you." sub="A peek at portfolios already getting our makers hired." />
+      <SectionHeader eyebrow={t("showcase.eyebrow")} title={t("showcase.title")} sub={t("showcase.sub")} />
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-2 gap-4 md:grid-cols-3">
         {creators.map((c) => (
-          <div
-            key={c.name}
-            data-sound-hover
-            className="group relative overflow-hidden rounded-2xl glass-panel transition-all duration-300 hover:-translate-y-1.5"
-          >
+          <div key={c.name} data-sound-hover className="group relative overflow-hidden rounded-2xl glass-panel transition-all duration-300 hover:-translate-y-1.5">
             <div className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-105" style={{ background: c.grad }} />
             <div className="flex items-center justify-between p-4">
               <div>
                 <p className="text-sm font-semibold">{c.name}</p>
                 <p className="text-xs text-muted-foreground">{c.role}</p>
               </div>
-              <button
-                onClick={() => open(c.name)}
-                data-sound
-                className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1.5 text-xs transition-colors hover:bg-white/20 cursor-pointer"
-              >
-                Hire me
+              <button onClick={() => open(c.name)} data-sound className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1.5 text-xs transition-colors hover:bg-white/20 cursor-pointer">
+                {t("demo.hire")}
               </button>
             </div>
           </div>
@@ -502,11 +390,11 @@ function Showcase() {
   );
 }
 
-/* ---------------- Testimonials (real submissions) ---------------- */
 type Review = { id: string; quote: string; name: string; role: string; rating: number; createdAt: number };
 const REVIEWS_KEY = "pp.reviews.v1";
 
 function Testimonials() {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [draft, setDraft] = useState({ quote: "", name: "", role: "", rating: 5 });
@@ -521,10 +409,7 @@ function Testimonials() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!draft.quote.trim() || !draft.name.trim()) return;
-    const next: Review[] = [
-      { id: crypto.randomUUID(), ...draft, createdAt: Date.now() },
-      ...reviews,
-    ].slice(0, 24);
+    const next: Review[] = [{ id: crypto.randomUUID(), ...draft, createdAt: Date.now() }, ...reviews].slice(0, 24);
     setReviews(next);
     try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(next)); } catch {}
     setDraft({ quote: "", name: "", role: "", rating: 5 });
@@ -533,28 +418,17 @@ function Testimonials() {
 
   return (
     <section className="relative px-4 py-28">
-      <SectionHeader
-        eyebrow="Community reviews"
-        title="What real creators say."
-        sub="We're brand new — no fake quotes here. Share your experience to help others."
-      />
+      <SectionHeader eyebrow={t("reviews.eyebrow")} title={t("reviews.title")} sub={t("reviews.sub")} />
       <div className="mx-auto mt-12 max-w-6xl">
         {reviews.length === 0 ? (
           <div className="glass-panel mx-auto max-w-xl rounded-2xl p-8 text-center">
             <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient text-white">
               <Star className="h-5 w-5 fill-current" />
             </div>
-            <h3 className="text-lg font-semibold">Be the first to review Portfolio Pro</h3>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-              No fabricated testimonials — your honest words will live here.
-            </p>
-            <button
-              data-sound
-              onClick={() => setShowForm(true)}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03] cursor-pointer"
-            >
-              Write a review
-              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            <h3 className="text-lg font-semibold">{t("reviews.empty")}</h3>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">{t("reviews.emptySub")}</p>
+            <button data-sound onClick={() => setShowForm(true)} className="mt-5 inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03] cursor-pointer">
+              {t("reviews.write")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </button>
           </div>
         ) : (
@@ -579,69 +453,31 @@ function Testimonials() {
               ))}
             </div>
             <div className="mt-8 flex justify-center">
-              <button
-                data-sound
-                onClick={() => setShowForm(true)}
-                className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10 cursor-pointer"
-              >
-                Add your review
+              <button data-sound onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium transition-colors hover:bg-white/10 cursor-pointer">
+                {t("reviews.write")}
               </button>
             </div>
           </>
         )}
-
         {showForm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={() => setShowForm(false)}>
-            <form
-              onSubmit={submit}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md glass-panel rounded-2xl p-6 animate-fade-up"
-            >
-              <h3 className="text-lg font-semibold">Share your experience</h3>
-              <p className="mt-1 text-xs text-muted-foreground">Honest reviews only — no marketing copy.</p>
+            <form onSubmit={submit} onClick={(e) => e.stopPropagation()} className="w-full max-w-md glass-panel rounded-2xl p-6 animate-fade-up">
+              <h3 className="text-lg font-semibold">{t("reviews.write")}</h3>
               <div className="mt-4 flex gap-1">
                 {[1, 2, 3, 4, 5].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => setDraft((d) => ({ ...d, rating: n }))}
-                    className="cursor-pointer"
-                    aria-label={`${n} stars`}
-                  >
+                  <button key={n} type="button" onClick={() => setDraft((d) => ({ ...d, rating: n }))} className="cursor-pointer" aria-label={`${n}`}>
                     <Star className={["h-6 w-6 text-[color:var(--violet)]", n <= draft.rating ? "fill-current" : "opacity-30"].join(" ")} />
                   </button>
                 ))}
               </div>
-              <textarea
-                required
-                rows={4}
-                placeholder="What did you think?"
-                value={draft.quote}
-                onChange={(e) => setDraft((d) => ({ ...d, quote: e.target.value }))}
-                className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm outline-none focus:border-[color:var(--violet)]"
-              />
+              <textarea required rows={4} placeholder={t("reviews.message")} value={draft.quote} onChange={(e) => setDraft((d) => ({ ...d, quote: e.target.value }))} className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm outline-none focus:border-[color:var(--violet)]" />
               <div className="mt-3 grid grid-cols-2 gap-3">
-                <input
-                  required
-                  placeholder="Your name"
-                  value={draft.name}
-                  onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
-                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
-                />
-                <input
-                  placeholder="Role (optional)"
-                  value={draft.role}
-                  onChange={(e) => setDraft((d) => ({ ...d, role: e.target.value }))}
-                  className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]"
-                />
+                <input required placeholder={t("reviews.name")} value={draft.name} onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]" />
+                <input placeholder={t("reviews.role")} value={draft.role} onChange={(e) => setDraft((d) => ({ ...d, role: e.target.value }))} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm outline-none focus:border-[color:var(--violet)]" />
               </div>
               <div className="mt-5 flex justify-end gap-2">
-                <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-white/5 cursor-pointer">
-                  Cancel
-                </button>
-                <button type="submit" data-sound className="rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white cursor-pointer">
-                  Post review
-                </button>
+                <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-white/5 cursor-pointer">{t("common.cancel")}</button>
+                <button type="submit" data-sound className="rounded-xl brand-gradient px-4 py-2 text-sm font-medium text-white cursor-pointer">{t("reviews.submit")}</button>
               </div>
             </form>
           </div>
@@ -651,99 +487,74 @@ function Testimonials() {
   );
 }
 
-/* ---------------- Why It's Free (replaces Pricing) ---------------- */
 function WhyFree() {
+  const { t } = useTranslation();
   const features = [
-    { icon: InfinityIcon, title: "Unlimited Projects", desc: "Publish as many projects as you want — no caps, ever." },
-    { icon: Layers, title: "Unlimited Portfolio Sections", desc: "Compose any layout with as many sections as you need." },
-    { icon: BarChart3, title: "Analytics Dashboard", desc: "Real-time views, sources and engagement for every project." },
-    { icon: Palette, title: "Custom Portfolio Themes", desc: "Switch themes and fine-tune colors, fonts and spacing." },
-    { icon: FileText, title: "Blog System", desc: "Publish articles and case studies with a built-in editor." },
-    { icon: Upload, title: "Resume Upload", desc: "Attach your CV so clients and recruiters can grab it instantly." },
-    { icon: Mail, title: "Contact Forms", desc: "Receive inquiries straight to your inbox — no setup required." },
-    { icon: Share2, title: "Portfolio Sharing", desc: "Beautiful share cards on every platform out of the box." },
+    { icon: InfinityIcon, title: t("features.dnd.t"), desc: t("features.dnd.d") },
+    { icon: Layers, title: t("product.sections"), desc: t("features.dnd.d") },
+    { icon: BarChart3, title: t("features.an.t"), desc: t("features.an.d") },
+    { icon: Palette, title: t("features.tpl.t"), desc: t("features.tpl.d") },
+    { icon: FileText, title: t("features.ai.t"), desc: t("features.ai.d") },
+    { icon: Upload, title: t("features.dom.t"), desc: t("features.dom.d") },
+    { icon: Mail, title: t("contact.email"), desc: t("features.seo.d") },
+    { icon: Share2, title: t("common.share"), desc: t("features.tpl.d") },
   ];
   return (
     <section id="pricing" className="relative px-4 py-28">
       <div className="mx-auto max-w-3xl text-center">
         <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full glass-panel px-3 py-1.5 text-xs">
           <Heart className="h-3.5 w-3.5 text-[color:var(--violet)]" />
-          <span className="text-muted-foreground">100% free, forever</span>
+          <span className="text-muted-foreground">{t("whyfree.eyebrow")}</span>
         </div>
-        <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-5xl">
-          Everything You Need.{" "}
-          <span className="text-gradient">Completely Free.</span>
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Portfolio Pro gives creators a beautiful professional portfolio experience with no
-          subscriptions and no hidden costs.
-        </p>
-        <div className="mx-auto mt-6 max-w-xl rounded-2xl glass-panel p-4 text-left">
-          <p className="text-xs uppercase tracking-wider text-[color:var(--violet)]">How is it sustained?</p>
-          <p className="mt-1.5 text-sm text-foreground/80">
-            Free forever for the core builder. In the future we plan to introduce optional
-            <span className="font-medium text-foreground"> Pro features </span>
-            (custom domains, advanced analytics, team workspaces) to keep the lights on —
-            everything you see today stays free.
-          </p>
+        <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-5xl">{t("whyfree.title")}</h2>
+        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{t("whyfree.sub")}</p>
+        <div className="mx-auto mt-6 grid max-w-4xl grid-cols-1 gap-3 text-start md:grid-cols-3">
+          {(["b1", "b2", "b3"] as const).map((k) => (
+            <div key={k} className="rounded-2xl glass-panel p-4">
+              <p className="text-sm font-semibold">{t(`whyfree.${k}.t`)}</p>
+              <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{t(`whyfree.${k}.d`)}</p>
+            </div>
+          ))}
         </div>
       </div>
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f, i) => (
-          <div
-            key={f.title}
-            data-sound-hover
-            className="group relative overflow-hidden rounded-2xl glass-panel p-6 transition-all duration-300 hover:-translate-y-1.5 animate-fade-up"
-            style={{ animationDelay: `${i * 60}ms` }}
-          >
+          <div key={i} data-sound-hover className="group relative overflow-hidden rounded-2xl glass-panel p-6 transition-all duration-300 hover:-translate-y-1.5 animate-fade-up" style={{ animationDelay: `${i * 60}ms` }}>
             <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]">
               <f.icon className="h-5 w-5" />
             </div>
             <h3 className="text-[15px] font-semibold tracking-tight">{f.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
-            <div className="pointer-events-none absolute -right-10 -bottom-10 h-32 w-32 rounded-full bg-[color:var(--electric)]/15 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
           </div>
         ))}
       </div>
       <div className="mx-auto mt-12 flex justify-center">
-        <Link
-          to="/auth"
-          search={{ mode: "register" }}
-          data-sound
-          data-sound-hover
-          className="inline-flex items-center gap-2 rounded-xl brand-gradient px-6 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03]"
-        >
-          Create your portfolio — free
-          <ArrowRight className="h-4 w-4" />
+        <Link to="/auth" search={{ mode: "register" }} data-sound data-sound-hover className="inline-flex items-center gap-2 rounded-xl brand-gradient px-6 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.7)] transition-transform hover:scale-[1.03]">
+          {t("hero.startFree")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
         </Link>
       </div>
     </section>
   );
 }
 
-/* ---------------- FAQ ---------------- */
 function FAQ() {
+  const { t } = useTranslation();
   const items = [
-    { q: "Is Portfolio Pro really free?", a: "Yes. Every feature is free — no paid tiers, no hidden upgrades. Build, publish and grow without ever paying a cent." },
-    { q: "Do I need to know how to code?", a: "No. Portfolio Pro is fully visual. Pick a template, edit content, and publish." },
-    { q: "Can I use my own domain?", a: "Yes — connect any custom domain and we'll handle SSL automatically." },
-    { q: "How many projects can I publish?", a: "Unlimited. There are no caps on projects, sections, blog posts or visitors." },
-    { q: "Can I export my site?", a: "Yes, you can export a static build of your portfolio at any time." },
+    { q: t("faq.q1"), a: t("faq.a1") },
+    { q: t("faq.q2"), a: t("faq.a2") },
+    { q: t("faq.q3"), a: t("faq.a3") },
+    { q: t("faq.q4"), a: t("faq.a4") },
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section id="faq" className="relative px-4 py-28">
-      <SectionHeader eyebrow="FAQ" title="Frequently asked questions." />
+      <SectionHeader eyebrow={t("faq.eyebrow")} title={t("faq.title")} />
       <div className="mx-auto mt-12 max-w-3xl space-y-3">
         {items.map((it, i) => {
           const isOpen = open === i;
           return (
             <div key={i} className="glass-panel overflow-hidden rounded-2xl">
-              <button
-                onClick={() => setOpen(isOpen ? null : i)}
-                data-sound
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer"
-              >
+              <button onClick={() => setOpen(isOpen ? null : i)} data-sound className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start cursor-pointer">
                 <span className="text-[15px] font-medium">{it.q}</span>
                 {isOpen ? <Minus className="h-4 w-4 text-muted-foreground" /> : <Plus className="h-4 w-4 text-muted-foreground" />}
               </button>
@@ -760,8 +571,8 @@ function FAQ() {
   );
 }
 
-/* ---------------- CTA ---------------- */
 function CTA() {
+  const { t } = useTranslation();
   return (
     <section className="relative px-4 py-28">
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] glass-panel p-10 text-center sm:p-16">
@@ -770,29 +581,14 @@ function CTA() {
           <div className="mx-auto mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient shadow-[0_20px_60px_-20px_oklch(0.55_0.25_295/0.7)]">
             <Zap className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-5xl">
-            Your next client is one portfolio away.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Join our growing community of creators building their professional presence on Portfolio Pro — completely free.
-          </p>
+          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-5xl">{t("cta.title")}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{t("cta.sub")}</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/auth"
-              search={{ mode: "register" }}
-              data-sound
-              data-sound-hover
-              className="inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.03]"
-            >
-              Start free
-              <ArrowRight className="h-4 w-4" />
+            <Link to="/auth" search={{ mode: "register" }} data-sound data-sound-hover className="inline-flex items-center gap-2 rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.03]">
+              {t("cta.primary")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </Link>
-            <Link
-              to="/demo"
-              data-sound
-              className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/15"
-            >
-              View demo
+            <Link to="/demo" data-sound className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/15">
+              {t("cta.secondary")}
             </Link>
           </div>
         </div>
@@ -801,7 +597,6 @@ function CTA() {
   );
 }
 
-/* ---------------- Section header ---------------- */
 function SectionHeader({ eyebrow, title, sub }: { eyebrow: string; title: string; sub?: string }) {
   return (
     <div className="mx-auto max-w-3xl text-center">

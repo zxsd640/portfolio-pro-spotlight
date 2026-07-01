@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -26,40 +27,32 @@ const templates = [
 ];
 
 function TemplatesPage() {
+  const { t } = useTranslation();
   return (
     <div className="relative min-h-screen bg-background">
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hero-glow" />
       <SiteNav />
       <main className="px-4 pt-36 pb-20">
         <div className="mx-auto max-w-3xl text-center animate-fade-up">
-          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--violet)]">Templates</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--violet)]">{t("tpage.eyebrow")}</p>
           <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-6xl">
-            Start from a <span className="text-gradient">masterpiece.</span>
+            {t("tpage.titleA")} <span className="text-gradient">{t("tpage.titleB")}</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Award-winning templates designed by senior designers — completely free.
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{t("tpage.sub")}</p>
         </div>
         <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.map((t, i) => (
-            <Link
-              key={t.name}
-              to="/demo"
-              data-sound
-              data-sound-hover
-              className="group relative overflow-hidden rounded-3xl glass-panel transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)] animate-fade-up"
-              style={{ animationDelay: `${i * 50}ms` }}
-            >
-              <div className="relative aspect-[4/5]" style={{ background: t.grad }}>
+          {templates.map((tpl, i) => (
+            <Link key={tpl.name} to="/demo" data-sound data-sound-hover className="group relative overflow-hidden rounded-3xl glass-panel transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)] animate-fade-up" style={{ animationDelay: `${i * 50}ms` }}>
+              <div className="relative aspect-[4/5]" style={{ background: tpl.grad }}>
                 <div className="absolute inset-x-6 bottom-6 rounded-xl bg-black/30 p-3 backdrop-blur-md">
-                  <p className="text-xs uppercase tracking-widest text-white/70">{t.role}</p>
-                  <p className="mt-0.5 text-xl font-semibold text-white">{t.name}</p>
+                  <p className="text-xs uppercase tracking-widest text-white/70">{tpl.role}</p>
+                  <p className="mt-0.5 text-xl font-semibold text-white">{tpl.name}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between p-4">
-                <span className="text-sm font-medium">{t.name}</span>
+                <span className="text-sm font-medium">{tpl.name}</span>
                 <span className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-xs group-hover:bg-white/20 transition-colors">
-                  Preview <ArrowRight className="h-3 w-3" />
+                  {t("tpage.preview")} <ArrowRight className="h-3 w-3 rtl:rotate-180" />
                 </span>
               </div>
             </Link>
