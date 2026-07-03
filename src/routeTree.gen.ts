@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TemplatesRouteImport } from './routes/templates'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -27,6 +28,11 @@ import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard.analy
 const TemplatesRoute = TemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoRoute = DemoRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/demo': typeof DemoRoute
+  '/explore': typeof ExploreRoute
   '/templates': typeof TemplatesRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
+  '/explore': typeof ExploreRoute
   '/templates': typeof TemplatesRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/demo': typeof DemoRoute
+  '/explore': typeof ExploreRoute
   '/templates': typeof TemplatesRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/builder': typeof DashboardBuilderRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/demo'
+    | '/explore'
     | '/templates'
     | '/dashboard/analytics'
     | '/dashboard/builder'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/demo'
+    | '/explore'
     | '/templates'
     | '/dashboard/analytics'
     | '/dashboard/builder'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/demo'
+    | '/explore'
     | '/templates'
     | '/dashboard/analytics'
     | '/dashboard/builder'
@@ -201,6 +213,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   DemoRoute: typeof DemoRoute
+  ExploreRoute: typeof ExploreRoute
   TemplatesRoute: typeof TemplatesRoute
 }
 
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/templates'
       fullPath: '/templates'
       preLoaderRoute: typeof TemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo': {
@@ -337,6 +357,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   DemoRoute: DemoRoute,
+  ExploreRoute: ExploreRoute,
   TemplatesRoute: TemplatesRoute,
 }
 export const routeTree = rootRouteImport

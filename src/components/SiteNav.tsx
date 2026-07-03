@@ -22,6 +22,7 @@ export function SiteNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const links = [
+    { label: t("nav.explore", "Explore"), to: "/explore" },
     { label: t("nav.templates"), to: "/templates" },
     { label: t("nav.demo"), to: "/demo" },
     { label: t("nav.about"), to: "/about" },

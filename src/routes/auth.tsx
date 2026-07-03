@@ -41,6 +41,19 @@ function AuthPage() {
     if (!authLoading && user) navigate({ to: "/dashboard" });
   }, [authLoading, user, navigate]);
 
+  const mapAuthError = (msg: string): string => {
+    const m = (msg || "").toLowerCase();
+    if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already"))
+      return "This email is already registered. Please sign in instead.";
+    if (m.includes("invalid login") || m.includes("invalid credentials"))
+      return "Invalid email or password. Please try again.";
+    if (m.includes("email not confirmed"))
+      return "Please verify your email first — check your inbox.";
+    if (m.includes("password") && m.includes("6"))
+      return "Password must be at least 6 characters.";
+    return msg || "Something went wrong";
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -56,6 +69,11 @@ function AuthPage() {
           },
         });
         if (error) throw error;
+        // Supabase returns an obfuscated identities:[] when email already exists
+        // (when "Confirm email" is on) — treat that as duplicate.
+        if (data.user && Array.isArray((data.user as any).identities) && (data.user as any).identities.length === 0) {
+          throw new Error("User already registered");
+        }
         if (data.session) {
           play("success");
           navigate({ to: "/dashboard" });
@@ -70,7 +88,7 @@ function AuthPage() {
         navigate({ to: "/dashboard" });
       }
     } catch (err: any) {
-      setError(err?.message || "Something went wrong");
+      setError(mapAuthError(err?.message));
       play("notify");
     } finally {
       setLoading(false);
@@ -80,15 +98,18 @@ function AuthPage() {
   const onGoogle = async () => {
     setError(null);
     try {
+      // redirect_uri MUST be a public URL — the /dashboard route is behind
+      // the _authenticated gate, so redirecting straight there can bounce
+      // the user back to /auth before the session is hydrated.
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/dashboard",
+        redirect_uri: window.location.origin,
       });
       if (result.error) {
         setError(result.error.message || "Google sign-in failed");
         return;
       }
       if (result.redirected) return;
-      navigate({ to: "/dashboard" });
+      // Popup flow: session is set — the useEffect above will redirect to /dashboard.
     } catch (err: any) {
       setError(err?.message || "Google sign-in failed");
     }

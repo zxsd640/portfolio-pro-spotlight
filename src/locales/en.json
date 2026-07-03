@@ -23,6 +23,7 @@
     "off": "Off"
   },
   "nav": {
+    "explore": "Explore",
     "templates": "Templates",
     "demo": "Demo",
     "about": "About",
@@ -32,6 +33,22 @@
     "soundOn": "Sound on",
     "soundOff": "Sound off",
     "menu": "Menu"
+  },
+  "explore": {
+    "eyebrow": "Explore",
+    "title": "Discover portfolios from the community",
+    "sub": "Real portfolios from real creators. Get inspired, or share yours with the world.",
+    "searchPh": "Search by name, title, or bio…",
+    "sortNewest": "Newest",
+    "sortAZ": "A–Z",
+    "view": "View portfolio",
+    "noBio": "This creator hasn't added a bio yet.",
+    "loadMore": "Load more",
+    "emptyTitle": "Be one of the first",
+    "emptySub": "The community is just getting started. Publish your portfolio and it will appear here.",
+    "emptyQuery": "No portfolios match your search",
+    "emptyQuerySub": "Try a different name, title, or keyword.",
+    "publish": "Publish your portfolio"
   },
   "hero": {
     "badge": "New — AI-powered portfolio builder",
