@@ -18,7 +18,7 @@ export const LANGUAGES = [
 
 export const STORAGE_KEY = "pp.lang";
 
-function detectInitialLanguage(): string {
+export function getStoredLanguage(): string {
   if (typeof window === "undefined") return "en";
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -29,6 +29,9 @@ function detectInitialLanguage(): string {
   return "en";
 }
 
+// IMPORTANT: Always initialize with "en" so SSR-rendered HTML matches the
+// first client render. The stored/preferred language is applied AFTER
+// hydration via `hydrateLanguage()` in the root component effect.
 if (!i18n.isInitialized) {
   i18n
     .use(initReactI18next)
@@ -41,7 +44,7 @@ if (!i18n.isInitialized) {
         de: { translation: de },
         pt: { translation: pt },
       },
-      lng: detectInitialLanguage(),
+      lng: "en",
       fallbackLng: "en",
       interpolation: { escapeValue: false },
       react: { useSuspense: false },
@@ -60,10 +63,12 @@ export function applyLanguage(code: string) {
   }
 }
 
-// Apply once on module load (client only)
-if (typeof document !== "undefined") {
-  const initial = detectInitialLanguage();
-  applyLanguage(initial);
+/** Call once, after hydration, on the client. */
+export function hydrateLanguage() {
+  if (typeof window === "undefined") return;
+  const code = getStoredLanguage();
+  if (code !== i18n.language) applyLanguage(code);
+  else applyLanguage(code); // ensure dir/lang attrs
 }
 
 export default i18n;

@@ -11,17 +11,8 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const current = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
 
-  // Apply stored language on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && stored !== i18n.language) applyLanguage(stored);
-      else applyLanguage(i18n.language);
-    } catch {
-      applyLanguage(i18n.language);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Language hydration happens once in RootComponent; nothing to do here.
+  void STORAGE_KEY;
 
   useEffect(() => {
     if (!open) return;

@@ -138,8 +138,15 @@ import { MouseGlow } from "../components/MouseGlow";
 import { AuthProvider } from "../lib/auth";
 import "../lib/i18n";
 
+import { hydrateLanguage } from "../lib/i18n";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  // Apply the user's stored language AFTER hydration to avoid SSR/CSR mismatch.
+  useEffect(() => {
+    hydrateLanguage();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
