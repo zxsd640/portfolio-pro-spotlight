@@ -27,9 +27,8 @@ export function MagneticLink({
   };
 
   return (
-    // @ts-expect-error - forwarding to Link, ref typing is compatible at runtime
     <Link
-      ref={ref}
+      ref={ref as never}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       className={`inline-flex will-change-transform transition-transform duration-200 ease-out ${className}`}
@@ -39,3 +38,4 @@ export function MagneticLink({
     </Link>
   );
 }
+
