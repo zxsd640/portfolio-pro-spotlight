@@ -1,15 +1,19 @@
 import { useRef, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 
-type LinkProps = React.ComponentProps<typeof Link>;
-
 /** Primary CTA that gently pulls toward the cursor. */
 export function MagneticLink({
   children,
   strength = 18,
   className = "",
   ...rest
-}: LinkProps & { children: ReactNode; strength?: number }) {
+}: React.ComponentProps<"a"> & {
+  to?: string;
+  search?: Record<string, unknown>;
+  params?: Record<string, unknown>;
+  children: ReactNode;
+  strength?: number;
+}) {
   const ref = useRef<HTMLAnchorElement>(null);
 
   const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -26,16 +30,19 @@ export function MagneticLink({
     if (el) el.style.transform = "translate3d(0,0,0) scale(1)";
   };
 
+  const LinkAny = Link as unknown as React.ComponentType<Record<string, unknown>>;
+
   return (
-    <Link
-      ref={ref as never}
+    <LinkAny
+      ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       className={`inline-flex will-change-transform transition-transform duration-200 ease-out ${className}`}
       {...rest}
     >
       {children}
-    </Link>
+    </LinkAny>
   );
 }
+
 
