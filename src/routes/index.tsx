@@ -422,23 +422,26 @@ function Templates() {
       <SectionHeader eyebrow={t("templates.eyebrow")} title={`${t("templates.title")} ${t("templates.titleAccent")}`} sub={t("templates.sub")} />
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {tpls.map((tpl) => (
-          <Link key={tpl.name} to="/demo" data-sound data-sound-hover className="group relative overflow-hidden rounded-3xl glass-panel transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)]">
-            <div className="relative aspect-[4/5] w-full overflow-hidden" style={{ background: tpl.grad }}>
-              <div className="absolute inset-x-6 bottom-6 rounded-xl bg-black/30 p-3 backdrop-blur-md">
-                <p className="text-xs uppercase tracking-widest text-white/70">{tpl.role}</p>
-                <p className="mt-0.5 text-xl font-semibold text-white">{tpl.name}</p>
+          <TiltCard key={tpl.name} max={12} className="rounded-3xl">
+            <Link to="/demo" data-sound data-sound-hover className="group relative block overflow-hidden rounded-3xl glass-panel transition-shadow duration-300 hover:shadow-[0_40px_80px_-30px_oklch(0.55_0.25_295/0.6)]">
+              <div className="relative aspect-[4/5] w-full overflow-hidden" style={{ background: tpl.grad }}>
+                <div className="absolute inset-x-6 bottom-6 rounded-xl bg-black/30 p-3 backdrop-blur-md" style={{ transform: "translateZ(40px)" }}>
+                  <p className="text-xs uppercase tracking-widest text-white/70">{tpl.role}</p>
+                  <p className="mt-0.5 text-xl font-semibold text-white">{tpl.name}</p>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-            </div>
-            <div className="flex items-center justify-between p-4">
-              <span className="text-sm font-medium">{tpl.name}</span>
-              <span className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-xs text-foreground transition-colors group-hover:bg-white/20">
-                {t("templates.preview")} <ArrowRight className="h-3 w-3 rtl:rotate-180" />
-              </span>
-            </div>
-          </Link>
+              <div className="flex items-center justify-between p-4">
+                <span className="text-sm font-medium">{tpl.name}</span>
+                <span className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-xs text-foreground transition-colors group-hover:bg-white/20">
+                  {t("templates.preview")} <ArrowRight className="h-3 w-3 rtl:rotate-180" />
+                </span>
+              </div>
+            </Link>
+          </TiltCard>
         ))}
       </div>
+
     </section>
   );
 }
