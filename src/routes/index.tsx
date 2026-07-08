@@ -28,6 +28,9 @@ import {
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useContactModal } from "@/lib/contact-modal";
+import { TiltCard } from "@/components/TiltCard";
+import { MagneticLink } from "@/components/MagneticButton";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
