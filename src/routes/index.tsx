@@ -76,74 +76,150 @@ function BackdropGlow() {
 }
 
 function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
-  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
+    let raf = 0;
     const onMove = (e: MouseEvent) => {
-      setParallax({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        setPointer({
+          x: e.clientX / window.innerWidth - 0.5,
+          y: e.clientY / window.innerHeight - 0.5,
+        });
       });
     };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
+  // px offsets — larger values = layer feels closer to camera
+  const layer = (depth: number) => ({
+    transform: `translate3d(${pointer.x * depth}px, ${pointer.y * depth - scrollY * (depth / 60)}px, 0)`,
+  });
+
   return (
-    <section ref={ref} className="relative flex min-h-[100svh] items-center justify-center px-4 pb-24 pt-36">
-      <FloatingCards parallax={parallax} />
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
+    <section
+      ref={sceneRef}
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-24 pt-36"
+      style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
+    >
+      {/* Depth layer: ambient glow (farthest back) */}
+      <div aria-hidden className="pointer-events-none absolute inset-0" style={layer(-14)}>
+        <div className="absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--royal)]/25 blur-[140px]" />
+        <div className="absolute right-[10%] top-[20%] h-72 w-72 rounded-full bg-[color:var(--electric)]/25 blur-[120px]" />
+        <div className="absolute left-[8%] bottom-[10%] h-80 w-80 rounded-full bg-[color:var(--violet)]/20 blur-[130px]" />
+      </div>
+
+      {/* Depth layer: floating portfolio cards */}
+      <FloatingCards pointer={pointer} scrollY={scrollY} />
+
+      {/* Depth layer: content (closest to camera) */}
+      <div
+        className="relative z-10 mx-auto max-w-4xl text-center will-change-transform"
+        style={{
+          transform: `translate3d(${pointer.x * 6}px, ${pointer.y * 6}px, 0) rotateX(${pointer.y * -2}deg) rotateY(${pointer.x * 2}deg)`,
+          transformStyle: "preserve-3d",
+        }}
+      >
         <div className="animate-fade-up mx-auto mb-6 inline-flex items-center gap-2 rounded-full glass-panel px-3 py-1.5 text-xs text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-[color:var(--violet)]" />
           {t("hero.badge")}
         </div>
-        <h1 className="animate-fade-up text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
+        <h1
+          className="animate-fade-up text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
+          style={{ animationDelay: "80ms", transform: "translateZ(40px)" }}
+        >
           {t("hero.titleA")} <span className="text-gradient">{t("hero.titleB")}</span>
         </h1>
-        <p className="animate-fade-up mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg" style={{ animationDelay: "160ms" }}>
+        <p
+          className="animate-fade-up mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
+          style={{ animationDelay: "160ms", transform: "translateZ(20px)" }}
+        >
           {t("hero.subtitle")}
         </p>
-        <div className="animate-fade-up mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "240ms" }}>
-          <Link to="/auth" search={{ mode: "register" }} data-sound data-sound-hover className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.6)] transition-transform hover:scale-[1.03]">
+        <div
+          className="animate-fade-up mt-9 flex flex-wrap items-center justify-center gap-3"
+          style={{ animationDelay: "240ms", transform: "translateZ(30px)" }}
+        >
+          <MagneticLink
+            to="/auth"
+            search={{ mode: "register" }}
+            data-sound
+            data-sound-hover
+            className="group relative items-center gap-2 overflow-hidden rounded-xl brand-gradient px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.55_0.25_295/0.6)]"
+          >
             {t("hero.startFree")}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
-          </Link>
-          <Link to="/demo" data-sound className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/10">
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
+          </MagneticLink>
+          <Link
+            to="/demo"
+            data-sound
+            className="inline-flex items-center gap-2 rounded-xl glass-panel px-5 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:bg-white/10"
+          >
             {t("hero.viewDemo")}
           </Link>
         </div>
-        <p className="animate-fade-up mt-6 text-xs text-muted-foreground" style={{ animationDelay: "320ms" }}>
+        <p
+          className="animate-fade-up mt-6 text-xs text-muted-foreground"
+          style={{ animationDelay: "320ms" }}
+        >
           {t("hero.smallPrint")}
         </p>
+      </div>
+
+      {/* subtle scroll hint */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 opacity-60"
+        style={{ transform: `translate(-50%, ${Math.min(scrollY * 0.3, 40)}px)` }}
+      >
+        <div className="flex h-9 w-6 items-start justify-center rounded-full border border-white/15 p-1">
+          <div className="h-2 w-1 animate-pulse rounded-full bg-white/60" />
+        </div>
       </div>
     </section>
   );
 }
 
-function FloatingCards({ parallax }: { parallax: { x: number; y: number } }) {
+function FloatingCards({ pointer, scrollY }: { pointer: { x: number; y: number }; scrollY: number }) {
+  const cards = [
+    { title: "UI/UX Design", subtitle: "Banking app · 2024", accent: "var(--electric)", cls: "left-[6%] top-[24%] w-56 hidden sm:block", depth: 40, rot: -6 },
+    { title: "Brand Identity", subtitle: "Nova Studio · 2024", accent: "var(--violet)", cls: "right-[7%] top-[18%] w-60 hidden sm:block", depth: 55, rot: 8 },
+    { title: "Photography", subtitle: "Editorial · Lagos", accent: "var(--cyan)", cls: "bottom-[12%] left-[12%] w-52 hidden md:block", depth: 30, rot: 5 },
+    { title: "Web Development", subtitle: "React · TypeScript", accent: "var(--royal)", cls: "bottom-[16%] right-[10%] w-52 hidden md:block", depth: 65, rot: -7 },
+  ];
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="animate-float-slow absolute left-[6%] top-[28%] w-56 -rotate-6 hidden sm:block" style={{ transform: `translate(${parallax.x * -1}px, ${parallax.y * -1}px) rotate(-6deg)` }}>
-        <MiniCard title="UI/UX Design" subtitle="Banking app · 2024" accent="var(--electric)" />
-      </div>
-      <div className="animate-float-medium absolute right-[7%] top-[22%] w-60 rotate-[8deg] hidden sm:block" style={{ transform: `translate(${parallax.x}px, ${parallax.y}px) rotate(8deg)` }}>
-        <MiniCard title="Brand Identity" subtitle="Nova Studio · 2024" accent="var(--violet)" />
-      </div>
-      <div className="animate-float-slow absolute bottom-[14%] left-[14%] w-52 rotate-[5deg] hidden md:block" style={{ transform: `translate(${parallax.x * 0.6}px, ${parallax.y * 0.6}px) rotate(5deg)`, animationDelay: "1.2s" }}>
-        <MiniCard title="Photography" subtitle="Editorial · Lagos" accent="var(--cyan)" />
-      </div>
-      <div className="animate-float-medium absolute bottom-[16%] right-[12%] w-52 -rotate-[7deg] hidden md:block" style={{ transform: `translate(${parallax.x * -0.7}px, ${parallax.y * -0.7}px) rotate(-7deg)`, animationDelay: "0.8s" }}>
-        <MiniCard title="Web Development" subtitle="React · TypeScript" accent="var(--royal)" />
-      </div>
+    <div aria-hidden className="pointer-events-none absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+      {cards.map((c, i) => (
+        <div
+          key={c.title}
+          className={`absolute will-change-transform ${c.cls}`}
+          style={{
+            transform: `translate3d(${pointer.x * -c.depth}px, ${pointer.y * -c.depth - scrollY * (c.depth / 200)}px, 0) rotateZ(${c.rot}deg) rotateX(${pointer.y * 6}deg) rotateY(${pointer.x * -6}deg)`,
+            transition: "transform 120ms ease-out",
+            animation: `float-${i % 2 === 0 ? "slow" : "medium"} ${6 + i}s ease-in-out infinite`,
+          }}
+        >
+          <MiniCard title={c.title} subtitle={c.subtitle} accent={c.accent} />
+        </div>
+      ))}
     </div>
   );
 }
 
 function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string; accent: string }) {
   return (
-    <div className="glass-panel overflow-hidden rounded-2xl">
+    <div className="glass-panel overflow-hidden rounded-2xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
       <div className="h-24 w-full" style={{ background: `linear-gradient(135deg, ${accent}, color-mix(in oklab, ${accent} 30%, transparent))` }} />
       <div className="p-3">
         <p className="text-[13px] font-semibold leading-tight">{title}</p>
@@ -152,6 +228,7 @@ function MiniCard({ title, subtitle, accent }: { title: string; subtitle: string
     </div>
   );
 }
+
 
 function TrustedBy() {
   const { t } = useTranslation();
