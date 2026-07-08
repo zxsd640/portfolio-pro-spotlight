@@ -50,6 +50,10 @@ if (!i18n.isInitialized) {
       react: { useSuspense: false },
     });
 }
+// Force English on module load so SSR HTML and the first client render always
+// agree, regardless of HMR-preserved singleton state. `hydrateLanguage()` runs
+// in a useEffect after mount to apply the user's stored preference.
+if (i18n.language !== "en") i18n.changeLanguage("en");
 
 export function applyLanguage(code: string) {
   const lang = LANGUAGES.find((l) => l.code === code) ?? LANGUAGES[0];
