@@ -386,16 +386,23 @@ function Features() {
       <SectionHeader eyebrow={t("features.eyebrow")} title={t("features.title")} sub={t("features.sub")} />
       <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((it) => (
-          <div key={it.title} data-sound-hover className="group relative overflow-hidden rounded-2xl glass-panel p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_oklch(0.55_0.25_295/0.5)]">
-            <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-xl brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]">
-              <it.icon className="h-5 w-5" />
+          <TiltCard
+            key={it.title}
+            max={8}
+            className="group rounded-2xl"
+          >
+            <div data-sound-hover className="relative overflow-hidden rounded-2xl glass-panel p-6 transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_oklch(0.55_0.25_295/0.55)]">
+              <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-xl brand-gradient text-white shadow-[0_10px_30px_-10px_oklch(0.55_0.25_295/0.7)]" style={{ transform: "translateZ(30px)" }}>
+                <it.icon className="h-5 w-5" />
+              </div>
+              <h3 className="text-base font-semibold tracking-tight" style={{ transform: "translateZ(20px)" }}>{it.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
+              <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[color:var(--royal)]/15 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
             </div>
-            <h3 className="text-base font-semibold tracking-tight">{it.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
-            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[color:var(--royal)]/15 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
-          </div>
+          </TiltCard>
         ))}
       </div>
+
     </section>
   );
 }
