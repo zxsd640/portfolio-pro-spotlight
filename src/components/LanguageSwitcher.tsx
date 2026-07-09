@@ -90,13 +90,14 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                 ].join(" ")}
                 style={ar ? { color: "#22c55e" } : undefined}
               >
-                <span
-                  className="text-base leading-none"
-                  aria-hidden
-                  style={ar ? { filter: "hue-rotate(75deg) saturate(2)" } : undefined}
-                >
-                  {l.flag}
-                </span>
+                {ar ? (
+                  <ArabicFlag size={18} />
+                ) : (
+                  <span className="text-base leading-none" aria-hidden>
+                    {l.flag}
+                  </span>
+                )}
+
                 <span className="flex-1 text-start">{l.name}</span>
                 {ar && (
                   <span
