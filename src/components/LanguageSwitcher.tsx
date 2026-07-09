@@ -3,6 +3,8 @@ import { Check, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES, STORAGE_KEY, applyLanguage } from "@/lib/i18n";
 import { useSound } from "@/lib/sound";
+import { ArabicFlag } from "@/components/ArabicFlag";
+
 
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const { i18n, t } = useTranslation();
