@@ -3,6 +3,8 @@ import { Check, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES, STORAGE_KEY, applyLanguage } from "@/lib/i18n";
 import { useSound } from "@/lib/sound";
+import { ArabicFlag } from "@/components/ArabicFlag";
+
 
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const { i18n, t } = useTranslation();
@@ -39,28 +41,29 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         aria-label={t("common.language")}
         title={t("common.language")}
         className={[
-          "inline-flex items-center gap-1.5 rounded-xl transition-colors hover:bg-white/10 cursor-pointer",
+          "inline-flex items-center gap-1.5 rounded-xl transition-all duration-300 hover:bg-white/10 cursor-pointer",
           isArabic(current.code) ? "text-[#22c55e] hover:text-[#22c55e]" : "text-muted-foreground hover:text-foreground",
           compact ? "h-9 w-9 justify-center" : "h-9 px-2.5",
         ].join(" ")}
       >
-        <span
-          className="text-base leading-none"
-          aria-hidden
-          style={isArabic(current.code) ? { color: "#22c55e", filter: "hue-rotate(75deg) saturate(2)" } : undefined}
-        >
-          {current.flag}
-        </span>
+        {isArabic(current.code) ? (
+          <ArabicFlag size={18} className="transition-transform duration-300 hover:scale-110" />
+        ) : (
+          <span className="text-base leading-none transition-transform duration-300" aria-hidden>
+            {current.flag}
+          </span>
+        )}
         {!compact && (
           <span
             className="text-xs font-medium uppercase tracking-wide"
-            style={isArabic(current.code) ? { color: "#22c55e" } : undefined}
+            style={isArabic(current.code) ? { color: "#16a34a" } : undefined}
           >
             {current.code}
           </span>
         )}
         {compact && <Globe className="sr-only h-4 w-4" />}
       </button>
+
 
       {open && (
         <div
@@ -87,13 +90,14 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                 ].join(" ")}
                 style={ar ? { color: "#22c55e" } : undefined}
               >
-                <span
-                  className="text-base leading-none"
-                  aria-hidden
-                  style={ar ? { filter: "hue-rotate(75deg) saturate(2)" } : undefined}
-                >
-                  {l.flag}
-                </span>
+                {ar ? (
+                  <ArabicFlag size={18} />
+                ) : (
+                  <span className="text-base leading-none" aria-hidden>
+                    {l.flag}
+                  </span>
+                )}
+
                 <span className="flex-1 text-start">{l.name}</span>
                 {ar && (
                   <span

@@ -124,10 +124,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
         <HeadContent />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
+
     </html>
   );
 }
